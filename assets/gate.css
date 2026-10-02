@@ -1,0 +1,93 @@
+/* The gate: Ground's invitation step (SignIn.swift `invited()`, PageTokens.swift SignInLook, the left
+   column of 1 October 2026), in the site's own tokens (assets/site.css). Light only. */
+
+:root {
+  --ground: #FCFCFB;
+  --ink: #0B0B0B;
+  --secondary: #52514E;
+  --quiet: #6D6B67;            /* Palette.placeholder too */
+  --edge: rgba(11, 11, 11, .10);
+  --edge-strong: rgba(11, 11, 11, .20);
+  --field: rgba(255, 255, 255, .50);
+  --accent: #2A78D6;
+  --focus-glow: #CDE2FB;
+  --primary: #0B0B0B;
+  --primary-hover: #2C2C2A;
+  --on-primary: #FCFCFB;
+  --r-card: 10px;
+  --fast: 60ms;
+  --slow: 450ms;
+  --overshoot: cubic-bezier(.34, 1.3, .64, 1);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+p, h1 { margin: 0; }
+.opening .gate { visibility: hidden; }
+
+/* One left-aligned column, a sixth of the window in (48 at the least), at most 400 wide, centred in
+   all but the window's bottom eighth. */
+.gate {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 48px 16px calc(48px + 12.5vh) max(48px, 16.6667vw);
+}
+.col { width: 100%; max-width: 400px; }
+@media (max-width: 420px) { .gate { padding-left: max(24px, 16.6667vw); } }
+
+.icon { display: block; width: 40px; height: 40px; }
+.title { margin-top: 22px; font-size: 32px; line-height: 38px; font-weight: 500; letter-spacing: -.005em; }
+.line { margin-top: 10px; font-size: 16px; line-height: 22px; color: var(--secondary); }
+
+.card { margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+
+/* A large field at the comfortable density: 40 high, corners 10, 12 at the sides, its words 16. */
+.field {
+  -webkit-appearance: none; appearance: none; margin: 0;
+  width: 280px; max-width: 100%; height: 40px; padding: 0 12px;
+  font: inherit; font-size: 16px; line-height: 24px; color: var(--ink);
+  background: var(--field);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-card);
+  outline: none;
+}
+.field::placeholder { color: var(--quiet); opacity: 1; }
+.field:hover:not(:focus) { border-color: var(--edge-strong); }
+.field:focus { box-shadow: 0 0 0 1px var(--ground), 0 0 0 2px var(--accent), 0 0 6px 3px var(--focus-glow); }
+
+.btn {
+  -webkit-appearance: none; appearance: none; border: 0; margin: 0; font: inherit; cursor: default;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 280px; max-width: 100%; height: 40px; padding: 0 16px; border-radius: var(--r-card);
+  font-size: 14px; line-height: 20px; font-weight: 500;
+  transition: background-color var(--fast) linear, opacity var(--fast) linear, transform var(--slow) var(--overshoot);
+}
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+.btn:active:not(:disabled) { transform: scale(.975); transition: background-color var(--fast) linear, transform var(--fast) linear; }
+.btn:disabled { opacity: .4; }
+.btn:focus { outline: none; }
+.btn:focus-visible { box-shadow: 0 0 0 1px var(--ground), 0 0 0 2px var(--accent), 0 0 6px 3px var(--focus-glow); }
+@media (prefers-reduced-motion: reduce) { .btn, .btn:active:not(:disabled) { transform: none; } }
+
+.problem { font-size: 13px; line-height: 19px; color: var(--quiet); min-height: 19px; }
+
+.app { margin-top: 40px; font-size: 13px; line-height: 19px; color: var(--quiet); }
+.app a { color: var(--secondary); text-decoration: underline; text-decoration-color: rgba(82, 81, 78, .35); text-underline-offset: 3px; border-radius: 4px; }
+.app a:hover { color: var(--ink); text-decoration-color: currentColor; }
+.app a:focus { outline: none; }
+.app a:focus-visible { box-shadow: 0 0 0 1px var(--ground), 0 0 0 2px var(--accent), 0 0 6px 3px var(--focus-glow); }
+.app p { margin-top: 2px; }
