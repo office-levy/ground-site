@@ -10,7 +10,7 @@
 <meta name="color-scheme" content="light dark">
 <script>
 /* Before the page is drawn: Light or Dark as the moon last chose, and whether this is one of Apple's own
-   systems, whose font draws SF Symbols (Site/public/assets/gate.css `.sym`). */
+   systems, whose font draws the Apple logo on the download (Site/public/assets/gate.css `.mark`). */
 (function () {
   var root = document.documentElement;
   try { var chosen = localStorage.getItem('appearance'); if (chosen === 'dark' || chosen === 'light') root.setAttribute('data-theme', chosen); } catch (e) {}
@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="assets/gate.css">
 </head>
 <body>
-<button class="theme" id="theme" type="button" aria-label="Dark appearance" aria-pressed="false"><span class="sym" aria-hidden="true"></span><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><path d="M11.66 7A7.08 7.08 0 1 0 20.82 16.49A7.06 7.06 0 0 1 11.66 7Z"/></svg></button>
+<button class="theme" id="theme" type="button" aria-label="Dark appearance" aria-pressed="false"><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><path d="M11.66 7A7.08 7.08 0 1 0 20.82 16.49A7.06 7.06 0 0 1 11.66 7Z"/></svg></button>
 <main class="gate" data-cloud="https://ground-cloud.ml2873.workers.dev">
   <div class="col">
     <span class="icon" aria-hidden="true"><img class="day" src="assets/icon-512.png" alt="" width="100" height="100"><img class="night" src="assets/icon-512-dark.png" alt="" width="100" height="100"></span>
@@ -31,7 +31,7 @@
     <form class="card" id="ask" novalidate>
       <div class="row">
         <input class="field" id="email" type="email" placeholder="Join the waitlist with your email" aria-label="Your email address, to join the waitlist" autocomplete="email" spellcheck="false">
-        <button class="go" id="send" type="submit" disabled aria-label="Join the waitlist"><span class="sym" aria-hidden="true"></span><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="9.18"/><path class="arrow" d="M9.83 14H18.28M15.02 10.75L18.28 14L15.02 17.25"/><path class="tick" d="M10.17 14.57L12.65 17.94L17.75 10.5"/></svg></button>
+        <button class="go" id="send" type="submit" disabled aria-label="Join the waitlist"><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="9.18"/><path class="arrow" d="M9.83 14H18.28M15.02 10.75L18.28 14L15.02 17.25"/><path class="tick" d="M10.17 14.57L12.65 17.94L17.75 10.5"/></svg></button>
       </div>
       <p class="problem" id="asked" role="status" aria-live="polite"></p>
     </form>

@@ -1,9 +1,14 @@
 /* The gate: the site's door, in Compile's tokens (docs/spec/visual-system.md, Palette.swift), in Light or
    Dark as the reader's system is, or as the moon at the top right chooses (the owner, 29 October 2026: “there
-   shoudl be a dark mode”). SF Pro, as the system's font, and SF Symbols, from the same font, on Apple's own
-   systems (the owner: “make sure its all apple sf symbols and font”). One column: Compile's icon, its name with "Research preview" beside it, and the
+   shoudl be a dark mode”). SF Pro, as the system's font, and drawings of SF Symbols (the owner: “make sure its all
+   apple sf symbols and font”). One column: Compile's icon, its name with "Research preview" beside it, and the
    waitlist; the code's cells take the waitlist's place, and the download theirs. Focus is quiet and
-   neutral here, a ring of tint, with no blue. */
+   neutral here, a ring of tint, with no blue.
+
+   Every line is a border, 0.5px, never a shadow (the owner, 29 October 2026, of the badge's edge on a phone:
+   “looks weird. make sure to always resolve this”): a browser snaps a border to the screen's own pixels, one
+   pixel on a Retina screen, where a half-pixel shadow falls between them and smears over two. Site/build.mjs
+   refuses a stylesheet with an inset shadow. */
 
 :root {
   --ground: #FFFFFF;           /* white (the owner, 29 October 2026: “make the background straight up white in light mode”) */
@@ -13,6 +18,7 @@
   --name: #0B0B0B;             /* Compile's name: ink in Light (“compile should be darker in light mode”) */
   --link: #52514E;             /* “Enter it”: a step softer than the name, in Light as in Dark (the owner, 29 October 2026: “the gray used in 'compile' should be the color for 'enter it' and the color 'enter it' is should take what compile is”) */
   --badge-fill: rgba(var(--tints), .022);
+  --hint: #A9A7A2;             /* the field's placeholder, lighter than the grey words (the owner, 29 October 2026: “the gray should be lighter gray”) */
   --faint: #AEACA7;            /* the footer's words, fainter than the grey words (the owner, 29 October 2026) */
   --tints: 11, 11, 11;         /* the tints are the text colour at an opacity: #0B0B0B in Light */
   --edge: rgba(var(--tints), .10);
@@ -46,6 +52,7 @@
   --name: #F7F8F8;
   --link: #CECECE;
   --badge-fill: rgba(var(--tints), .05);
+  --hint: #767676;
   --faint: #6B6B6B;
   --tints: 255, 255, 255;
   --tint-hover: rgba(var(--tints), .075);
@@ -63,7 +70,8 @@
     --name: #F7F8F8;
     --link: #CECECE;
     --badge-fill: rgba(var(--tints), .05);
-    --faint: #6B6B6B;
+    --hint: #767676;
+  --faint: #6B6B6B;
     --tints: 255, 255, 255;
     --tint-hover: rgba(var(--tints), .075);
     --field: rgba(255, 255, 255, .018);
@@ -143,8 +151,8 @@ p, h1 { margin: 0; }
 .title .name { position: relative; display: block; }
 .badge {
   position: absolute; left: 100%; top: 0; bottom: 0; margin: auto 0 auto 9px; height: fit-content;
-  display: block; padding: 5.2px 6.3px 4.8px 5.7px; white-space: nowrap;   /* even round the letters themselves */
-  border-radius: 3.5px; background: var(--badge-fill); box-shadow: inset 0 0 0 0.5px rgba(var(--tints), .22);
+  display: block; padding: 4.7px 5.8px 4.3px 5.2px; white-space: nowrap;   /* even round the letters themselves, inside the hairline */
+  border: 0.5px solid rgba(var(--tints), .22); border-radius: 3.5px; background: var(--badge-fill);
   font-size: 10.5px; line-height: 11px; font-weight: var(--regular); letter-spacing: 0; color: var(--quiet);  /* a little lighter than medium (the owner, 29 October 2026) */
   /* Its words in the middle of the hairline, always (the owner, 28 and 29 October 2026: “make sure 'research
      preview' is always centered in its box”): the box trimmed to the capitals' top and the baseline, with
@@ -157,8 +165,7 @@ p, h1 { margin: 0; }
 /* The field, and in it at the right SF Symbols' arrow.right.circle, light (the owner, 29 October 2026: the tick
    was “unclear if its submit” and “to heavy the line weight”; of four made, “A”): faint until what is typed
    could be sent, in ink once it could, arrow.right.circle.fill under the pointer and as it goes, with a little
-   give, and checkmark.circle.fill once the address is on the waitlist. Where the system's font has no SF
-   Symbols, a drawing of the same (`.drawn`). */
+   give, and checkmark.circle.fill once the address is on the waitlist; drawn (`.drawn`, below). */
 .row { position: relative; }
 .row .field { padding: 0 56px 0 24px; }
 .go {
@@ -167,12 +174,7 @@ p, h1 { margin: 0; }
   display: grid; place-items: center; color: var(--ink);
   transition: color var(--base) var(--ease-out), transform var(--slow) var(--overshoot);
 }
-.go .sym { font-size: 20px; font-weight: 300; }
-.go .sym::before { content: "\10007C"; }                                                    /* arrow.right.circle */
-.go:not(:disabled):hover .sym::before, .card.sending .go .sym::before { content: "\10007D"; } /* arrow.right.circle.fill */
-.card.done .go .sym::before { content: "\100063"; }                                         /* checkmark.circle.fill */
 .go .drawn { display: block; width: 28px; height: 28px; overflow: visible; }  /* the symbol's own proportions, measured */
-.apple .go .drawn { display: none; }
 .go circle { fill: transparent; stroke: currentColor; stroke-width: 1.35; transition: fill var(--base) var(--ease-out); }
 .go path { fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; transition: stroke var(--base) var(--ease-out); }
 .go .tick { display: none; stroke-width: 1.45; }
@@ -203,7 +205,7 @@ p, h1 { margin: 0; }
   outline: none;
   transition: border-color var(--fast) linear, box-shadow var(--base) var(--ease-out);
 }
-.field::placeholder { color: var(--quiet); opacity: 1; letter-spacing: normal; }
+.field::placeholder { color: var(--hint); opacity: 1; letter-spacing: normal; }
 .field:hover:not(:focus) { border-color: rgba(var(--tints), .22); }
 /* Under focus, a little lighter than the edge a pointer brings (the owner, 28 October 2026: “the perimeter
    around the textbox looks a bit too heavy when you're in it. lessen just a bit”). */
@@ -305,12 +307,14 @@ p, h1 { margin: 0; }
 
 /* Light or Dark, chosen here (the owner, 29 October 2026: “the symbol for dark and light is tha thalf moon and
    then fill all white on dark mode”, “sort of like this https://docs.x.ai/overview”, “dont do fill for the
-   moon”): at the window's top right, SF Symbols' moon, quiet in Light and white in Dark. */
+   moon”): at the window's top right, SF Symbols' moon (drawn), a light grey in Light and a dark grey in Dark, as the
+   placeholder is (the owner, 29 October 2026: “lighter gray and darker grey shades in light and dark mode
+   respectively the moon”), and ink under the pointer. */
 .theme {
   -webkit-appearance: none; appearance: none; margin: 0; padding: 0; border: 0; background: none; cursor: pointer;
   position: fixed; z-index: 2; top: max(14px, env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px));
   width: 28px; height: 28px; border-radius: 50%;
-  display: grid; place-items: center; color: var(--quiet);
+  display: grid; place-items: center; color: var(--hint);
   animation: arrive var(--slow) var(--ease-out) 340ms both;
   transition: color var(--fast) linear, background-color var(--fast) linear;
 }
@@ -318,20 +322,10 @@ p, h1 { margin: 0; }
 .theme:focus { outline: none; }
 .theme:focus-visible { box-shadow: 0 0 0 2px var(--ground), 0 0 0 4px var(--edge-strong); }
 .theme .drawn { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.13; stroke-linejoin: round; }
-:root[data-theme="dark"] .theme { color: var(--ink); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme { color: var(--ink); }
-}
 
-/* An SF Symbol, as the system's font draws it on Apple's own systems: its character, at the text's weight.
-   Elsewhere, where no font has them, a drawing of the same shape stands in (`.drawn`), drawn to the symbol's
-   measured size, line and place in its button (the owner, 29 October 2026: “the non apple should more closely
-   match the apple”). */
-.sym { display: none; font-family: var(--font); font-style: normal; line-height: 1; }
-.apple .sym { display: block; }
-.apple .drawn { display: none; }
-.theme .sym { font-size: 15px; font-weight: 400; }
-.theme .sym::before { content: "\1001B9"; }   /* moon */
+/* SF Symbols, drawn: no browser draws SF Symbols from the system's font, Safari on a Mac included (the owner,
+   29 October 2026: “the apple symbols aren't showing”), so each is a drawing of the symbol at its measured
+   size, line and place in its button, the same everywhere. */
 
 /* The page's footer, small and faint (the owner, 29 October 2026: “should be smaller. lighter in light mode and
    darker on dark mode. on the bottom also put small © 2026 L LLC”): the copyright, and the privacy page with
