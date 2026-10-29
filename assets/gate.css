@@ -144,20 +144,20 @@ p, h1 { margin: 0; }
   margin-top: 32px; display: flex; justify-content: center;
   font-size: 17px; line-height: 27px; font-weight: var(--regular); letter-spacing: 0; color: var(--name);
 }
-/* The name in the middle, and "Research preview" beside it, level with the name's middle, as Claude Duet sets
-   its own (the owner, 29 October 2026: “even the name compile put side by side with reaerch preview in the
-   same way”; “recenter compile and make reserch preview smaller w the little box its in”): 10.5 points,
-   regular, quiet, in the faintest tint inside a hairline with small corners. */
-.title .name { position: relative; display: block; }
+/* The name and "Research preview" beside it, level with the name's middle, as Claude Duet sets its own (the
+   owner, 29 October 2026: “even the name compile put side by side with reaerch preview in the same way”), the
+   two centred together under the icon (of four layouts, “D”: the name centred alone left the pair right of
+   the column). The badge 10 points, light, a touch spaced, in the placeholder's grey, in the faintest tint
+   inside a fainter hairline (of five, “badge 5 with 3 faint grey fill”: “the text is too heavy”). */
+.title .name { display: inline-flex; align-items: center; }
 .badge {
-  position: absolute; left: 100%; top: 0; bottom: 0; margin: auto 0 auto 9px; height: fit-content;
-  display: block; padding: 4.7px 5.8px 4.3px 5.2px; white-space: nowrap;   /* even round the letters themselves, inside the hairline */
-  border: 0.5px solid rgba(var(--tints), .22); border-radius: 3.5px; background: var(--badge-fill);
-  font-size: 10.5px; line-height: 11px; font-weight: var(--regular); letter-spacing: 0; color: var(--quiet);  /* a little lighter than medium (the owner, 29 October 2026) */
+  display: block; margin-left: 9px; padding: 4.7px 5.8px 4.3px 5.2px; white-space: nowrap;   /* even round the letters themselves, inside the hairline */
+  border: 0.5px solid rgba(var(--tints), .16); border-radius: 3.5px; background: var(--badge-fill);
+  font-size: 10px; line-height: 11px; font-weight: 300; letter-spacing: .01em; color: var(--hint);
   /* Its words in the middle of the hairline, always (the owner, 28 and 29 October 2026: “make sure 'research
      preview' is always centered in its box”): the box trimmed to the capitals' top and the baseline, with
      even padding round them, so the middle is the letters' own, in any font, and not their line's; and the
-     box itself in the middle of the name's line. */
+     box itself in the middle of the name's line, as the row centres it. */
   text-box: trim-both cap alphabetic;
 }
 
@@ -224,8 +224,10 @@ p, h1 { margin: 0; }
   position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; padding: 0; border: 0;
   opacity: 0; font-size: 16px; color: transparent; background: transparent; caret-color: transparent; cursor: text;
 }
-.boxes { display: flex; gap: 14px; }
-.boxes .group { display: grid; grid-template-columns: repeat(4, 28px); gap: 5px; }
+/* As the app's (SignInLook.codeCell; the owner, 29 October 2026: “make the site then conform to the app”):
+   26 wide, 4 apart, in fours 12 apart. */
+.boxes { display: flex; gap: 12px; }
+.boxes .group { display: grid; grid-template-columns: repeat(4, 26px); gap: 4px; }
 .box {
   display: grid; place-items: center; height: 40px; border-radius: 7px;
   background: var(--field); border: 0.5px solid rgba(var(--tints), .13);
@@ -328,12 +330,12 @@ p, h1 { margin: 0; }
    size, line and place in its button, the same everywhere. */
 
 /* The page's footer, small and faint (the owner, 29 October 2026: “should be smaller. lighter in light mode and
-   darker on dark mode. on the bottom also put small © 2026 L LLC”): the copyright, and the privacy page with
-   the policy and the terms. */
+   darker on dark mode. on the bottom also put small © 2026 L LLC”; then “too small now. should be a tad bit
+   larger”, so 12): the copyright, and the policy and the terms as one text file. */
 .foot {
   padding: 0 max(24px, env(safe-area-inset-right, 0px)) max(22px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
   display: flex; justify-content: center; gap: 16px;
-  font-size: 11px; line-height: 14px; color: var(--faint);
+  font-size: 12px; line-height: 16px; color: var(--faint);
 }
 .foot a { color: var(--faint); border-radius: 4px; transition: color var(--fast) linear; text-decoration: none; }
 .foot a:hover { color: var(--ink); }
