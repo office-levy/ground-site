@@ -1,93 +1,370 @@
-/* The gate: Ground's invitation step (SignIn.swift `invited()`, PageTokens.swift SignInLook, the left
-   column of 1 October 2026), in the site's own tokens (assets/site.css). Light only. */
+/* The gate: the site's door, in Compile's tokens (docs/spec/visual-system.md, Palette.swift), in Light or
+   Dark as the reader's system is, or as the moon at the top right chooses (the owner, 29 October 2026: “there
+   shoudl be a dark mode”). SF Pro, as the system's font, and SF Symbols, from the same font, on Apple's own
+   systems (the owner: “make sure its all apple sf symbols and font”). One column: Compile's icon, its name with "Research preview" beside it, and the
+   waitlist; the code's cells take the waitlist's place, and the download theirs. Focus is quiet and
+   neutral here, a ring of tint, with no blue. */
 
 :root {
-  --ground: #FCFCFB;
+  --ground: #FFFFFF;           /* white (the owner, 29 October 2026: “make the background straight up white in light mode”) */
   --ink: #0B0B0B;
   --secondary: #52514E;
-  --quiet: #6D6B67;            /* Palette.placeholder too */
-  --edge: rgba(11, 11, 11, .10);
-  --edge-strong: rgba(11, 11, 11, .20);
-  --field: rgba(255, 255, 255, .50);
+  --quiet: #8E8C87;            /* the grey words, lighter than the app's (the owner, 29 October 2026: “the gray text should be lighter in light mode and darker in dark mode”) */
+  --name: #0B0B0B;             /* Compile's name: ink in Light (“compile should be darker in light mode”) */
+  --link: #52514E;             /* “Enter it”: a step softer than the name, in Light as in Dark (the owner, 29 October 2026: “the gray used in 'compile' should be the color for 'enter it' and the color 'enter it' is should take what compile is”) */
+  --badge-fill: rgba(var(--tints), .022);
+  --faint: #AEACA7;            /* the footer's words, fainter than the grey words (the owner, 29 October 2026) */
+  --tints: 11, 11, 11;         /* the tints are the text colour at an opacity: #0B0B0B in Light */
+  --edge: rgba(var(--tints), .10);
+  --edge-strong: rgba(var(--tints), .20);
+  --tint: rgba(var(--tints), .05);
+  --tint-hover: rgba(var(--tints), .10);
+  --field: #FCFCFC;            /* the text box the lightest grey on the white page (the owner, 29 October 2026: “a lot lighter gray”, then lighter still) */
+  --shadow: rgba(11, 11, 11, .045);
   --accent: #2A78D6;
   --focus-glow: #CDE2FB;
-  --primary: #0B0B0B;
-  --primary-hover: #2C2C2A;
-  --on-primary: #FCFCFB;
   --r-card: 10px;
   --fast: 60ms;
+  --base: 200ms;
+  --settle: 300ms;
   --slow: 450ms;
-  --overshoot: cubic-bezier(.34, 1.3, .64, 1);
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
-  color-scheme: light;
+  --ease-out: cubic-bezier(.165, .84, .44, 1);
+  --overshoot: cubic-bezier(.3, 1.12, .6, 1);   /* a little give, no more */
+  --regular: 400;
+  --medium: 500;
+  --font: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro", "SF Pro Text", sans-serif;
+  color-scheme: light dark;
 }
-
+/* Dark, as Compile's own (Palette.swift): Linear's page, #08090A, its text #F7F8F8, X's greys for the
+   quieter words, the tints white; the field a step above the page, as the app's message field is. As the
+   reader's system is, unless the moon chose (`data-theme`, kept in the browser). */
+:root[data-theme="dark"] {
+  --ground: #08090A;
+  --ink: #F7F8F8;
+  --secondary: #CECECE;
+  --quiet: #8C8C8C;
+  --name: #F7F8F8;
+  --link: #CECECE;
+  --badge-fill: rgba(var(--tints), .05);
+  --faint: #6B6B6B;
+  --tints: 255, 255, 255;
+  --tint-hover: rgba(var(--tints), .075);
+  --field: rgba(255, 255, 255, .018);   /* a step above the page, less than it was (the owner, 29 October 2026: “make the text box a bit darker than it was before”) */
+  --shadow: rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #08090A;
+    --ink: #F7F8F8;
+    --secondary: #CECECE;
+    --quiet: #8C8C8C;
+    --name: #F7F8F8;
+    --link: #CECECE;
+    --badge-fill: rgba(var(--tints), .05);
+    --faint: #6B6B6B;
+    --tints: 255, 255, 255;
+    --tint-hover: rgba(var(--tints), .075);
+    --field: rgba(255, 255, 255, .018);
+    --shadow: rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   margin: 0;
+  display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh;
   background: var(--ground);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--regular);
   -webkit-font-smoothing: antialiased;
+  transition: background-color var(--base) var(--ease-out), color var(--base) var(--ease-out);
 }
 p, h1 { margin: 0; }
-.opening .gate { visibility: hidden; }
+.opening .gate, .opening .foot { visibility: hidden; }
 
-/* One left-aligned column, a sixth of the window in (48 at the least), at most 400 wide, centred in
-   all but the window's bottom eighth. */
+/* One column, 360 wide, a little above the window's middle: its top stays where it is, so a message, a
+   form giving way to another, or the download, changes nothing above it. */
 .gate {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  padding: 48px 16px calc(48px + 12.5vh) max(48px, 16.6667vw);
+  flex: 1;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: max(48px, calc(46vh - 160px)) max(24px, env(safe-area-inset-right, 0px)) 64px max(24px, env(safe-area-inset-left, 0px));
+  padding-top: max(48px, calc(46svh - 160px));
 }
-.col { width: 100%; max-width: 400px; }
-@media (max-width: 420px) { .gate { padding-left: max(24px, 16.6667vw); } }
+/* In Claude Duet's proportions (the owner, 29 October 2026: “make the relative sizes for each piece closer to
+   https://claude.com/product/claude-duet”): the icon 100, the name 17 with its label beside it 32 below, and
+   a field 56 high, 440 across. */
+.col { width: 100%; max-width: 440px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+/* Arriving (the owner, 28 October 2026: “how about motion”; 29 October: “should be even subtler”): the icon
+   settles in from a touch small and low; then the name, its label landing beside it, the line and the form,
+   each a beat after the one before, a few points each. Reduce Motion shows them at once. */
+.col > * { animation: arrive var(--slow) var(--ease-out) both; }
+.col > .icon { animation: settle 600ms var(--overshoot) backwards; }
+.col > .title { animation-delay: 90ms; }
+.col > .card { animation-delay: 220ms; }
+.col > .switch { animation-delay: 280ms; }
+.foot { animation: arrive var(--slow) var(--ease-out) 340ms both; }
+.title .badge { animation: land var(--settle) var(--ease-out) 460ms both; }
 
-.icon { display: block; width: 40px; height: 40px; }
-.title { margin-top: 22px; font-size: 32px; line-height: 38px; font-weight: 500; letter-spacing: -.005em; }
-.line { margin-top: 10px; font-size: 16px; line-height: 22px; color: var(--secondary); }
+/* Compile's icon, as it sits in the Dock: its own rounded shape, with the faintest shadow under it (the
+   owner, 29 October 2026: “dial down the shadow under the icon”). Under the pointer it lifts a point, its
+   shadow with it. In Dark no tile, the shapes alone (scripts/app-icon/site.py; the owner: “why does the icon
+   look weird in dark mode the light patches”), the two crossing as the appearance changes. */
+.icon {
+  position: relative; display: block; width: 100px; height: 100px;
+  filter: drop-shadow(0 0.5px 1px var(--shadow));
+  transition: transform var(--settle) var(--overshoot), filter var(--settle) var(--ease-out);
+}
+.icon:hover {
+  transform: translateY(-1px) scale(1.012);
+  filter: drop-shadow(0 1px 2px var(--shadow));
+}
+.icon img { display: block; width: 100px; height: 100px; transition: opacity var(--base) var(--ease-out); }
+.icon .night { position: absolute; inset: 0; opacity: 0; }
+:root[data-theme="dark"] .icon .night { opacity: 1; }
+:root[data-theme="dark"] .icon .day { opacity: 0; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon .night { opacity: 1; }
+  :root:not([data-theme="light"]) .icon .day { opacity: 0; }
+}
+.title {
+  margin-top: 32px; display: flex; justify-content: center;
+  font-size: 17px; line-height: 27px; font-weight: var(--regular); letter-spacing: 0; color: var(--name);
+}
+/* The name in the middle, and "Research preview" beside it, level with the name's middle, as Claude Duet sets
+   its own (the owner, 29 October 2026: “even the name compile put side by side with reaerch preview in the
+   same way”; “recenter compile and make reserch preview smaller w the little box its in”): 10.5 points,
+   regular, quiet, in the faintest tint inside a hairline with small corners. */
+.title .name { position: relative; display: block; }
+.badge {
+  position: absolute; left: 100%; top: 0; bottom: 0; margin: auto 0 auto 9px; height: fit-content;
+  display: block; padding: 5.2px 6.3px 4.8px 5.7px; white-space: nowrap;   /* even round the letters themselves */
+  border-radius: 3.5px; background: var(--badge-fill); box-shadow: inset 0 0 0 0.5px rgba(var(--tints), .22);
+  font-size: 10.5px; line-height: 11px; font-weight: var(--regular); letter-spacing: 0; color: var(--quiet);  /* a little lighter than medium (the owner, 29 October 2026) */
+  /* Its words in the middle of the hairline, always (the owner, 28 and 29 October 2026: “make sure 'research
+     preview' is always centered in its box”): the box trimmed to the capitals' top and the baseline, with
+     even padding round them, so the middle is the letters' own, in any font, and not their line's; and the
+     box itself in the middle of the name's line. */
+  text-box: trim-both cap alphabetic;
+}
 
-.card { margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.card { margin-top: 28px; width: 100%; display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+/* The field, and in it at the right SF Symbols' arrow.right.circle, light (the owner, 29 October 2026: the tick
+   was “unclear if its submit” and “to heavy the line weight”; of four made, “A”): faint until what is typed
+   could be sent, in ink once it could, arrow.right.circle.fill under the pointer and as it goes, with a little
+   give, and checkmark.circle.fill once the address is on the waitlist. Where the system's font has no SF
+   Symbols, a drawing of the same (`.drawn`). */
+.row { position: relative; }
+.row .field { padding: 0 56px 0 24px; }
+.go {
+  -webkit-appearance: none; appearance: none; margin: 0; padding: 0; border: 0; background: none; cursor: pointer;
+  position: absolute; right: 14px; top: 50%; width: 28px; height: 28px; margin-top: -14px; border-radius: 50%;
+  display: grid; place-items: center; color: var(--ink);
+  transition: color var(--base) var(--ease-out), transform var(--slow) var(--overshoot);
+}
+.go .sym { font-size: 20px; font-weight: 300; }
+.go .sym::before { content: "\10007C"; }                                                    /* arrow.right.circle */
+.go:not(:disabled):hover .sym::before, .card.sending .go .sym::before { content: "\10007D"; } /* arrow.right.circle.fill */
+.card.done .go .sym::before { content: "\100063"; }                                         /* checkmark.circle.fill */
+.go .drawn { display: block; width: 28px; height: 28px; overflow: visible; }  /* the symbol's own proportions, measured */
+.apple .go .drawn { display: none; }
+.go circle { fill: transparent; stroke: currentColor; stroke-width: 1.35; transition: fill var(--base) var(--ease-out); }
+.go path { fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; transition: stroke var(--base) var(--ease-out); }
+.go .tick { display: none; stroke-width: 1.45; }
+.go:disabled { color: var(--edge-strong); cursor: default; }
+.go:not(:disabled):hover circle { fill: currentColor; }
+.go:not(:disabled):hover path { stroke: var(--ground); }
+.go:active:not(:disabled) { transform: scale(.94); transition: transform var(--fast) linear; }
+.go:focus { outline: none; }
+.go:focus-visible { box-shadow: 0 0 0 2px var(--ground), 0 0 0 4px var(--edge-strong); }
+.card.sending .go, .card.done .go { color: var(--ink); cursor: default; animation: give var(--slow) var(--overshoot); }
+.card.sending .go circle, .card.done .go circle { fill: var(--ink); }
+.card.sending .go path, .card.done .go path { stroke: var(--ground); }
+.card.done .go .arrow { display: none; }
+.card.done .go .tick { display: inline; }
+.card.done .go { animation: none; }
+.card[hidden] { display: none; }
+.card.shown { animation: arrive var(--settle) var(--ease-out); }
 
-/* A large field at the comfortable density: 40 high, corners 10, 12 at the sides, its words 16. */
+/* A field as Claude Duet's: 56 high, 24 at the sides, its words 15, but corners of 10 (the owner, 29 October
+   2026: “lessen the radii of the text box”); under focus its edge darkens and a ring of tint comes round it. */
 .field {
   -webkit-appearance: none; appearance: none; margin: 0;
-  width: 280px; max-width: 100%; height: 40px; padding: 0 12px;
-  font: inherit; font-size: 16px; line-height: 24px; color: var(--ink);
+  width: 100%; height: 56px; padding: 0 24px;
+  font: inherit; font-size: 15px; line-height: 22px; color: var(--ink);
   background: var(--field);
-  border: 1px solid var(--edge);
-  border-radius: var(--r-card);
+  border: 0.5px solid rgba(var(--tints), .13);   /* a faint hairline (the owner, 29 October 2026: “thinner lines for text boxes”, “too heavy … the outline”) */
+  border-radius: 10px;
   outline: none;
+  transition: border-color var(--fast) linear, box-shadow var(--base) var(--ease-out);
 }
-.field::placeholder { color: var(--quiet); opacity: 1; }
-.field:hover:not(:focus) { border-color: var(--edge-strong); }
-.field:focus { box-shadow: 0 0 0 1px var(--ground), 0 0 0 2px var(--accent), 0 0 6px 3px var(--focus-glow); }
+.field::placeholder { color: var(--quiet); opacity: 1; letter-spacing: normal; }
+.field:hover:not(:focus) { border-color: rgba(var(--tints), .22); }
+/* Under focus, a little lighter than the edge a pointer brings (the owner, 28 October 2026: “the perimeter
+   around the textbox looks a bit too heavy when you're in it. lessen just a bit”). */
+.field:focus { border-color: rgba(var(--tints), .2); box-shadow: 0 0 0 3px rgba(var(--tints), .03); }
 
-.btn {
-  -webkit-appearance: none; appearance: none; border: 0; margin: 0; font: inherit; cursor: default;
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 280px; max-width: 100%; height: 40px; padding: 0 16px; border-radius: var(--r-card);
-  font-size: 14px; line-height: 20px; font-weight: 500;
-  transition: background-color var(--fast) linear, opacity var(--fast) linear, transform var(--slow) var(--overshoot);
+
+/* An invitation code: a cell for each of its twelve letters and digits, in fours (the owner, 28 October
+   2026: “a thing per character or digit”; of three made, “go with three”), each as the text box is (29 October:
+   “consistent wiht all the conventions weve established on the join waitinglist page”): its faint fill and
+   hairline, the next's hairline darker with the text box's ring and a caret. The field that takes the typing
+   lies unseen over them. A letter lands in its cell, a little small; while the code is checked the fill
+   breathes along the cells; a code that isn't one shakes them a little; one that is clears them, one after
+   another. */
+.cells { position: relative; display: flex; align-items: center; justify-content: center; height: 56px; }  /* as high as the field */
+.cells input {
+  position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; padding: 0; border: 0;
+  opacity: 0; font-size: 16px; color: transparent; background: transparent; caret-color: transparent; cursor: text;
 }
-.btn-primary { background: var(--primary); color: var(--on-primary); }
-.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
-.btn:active:not(:disabled) { transform: scale(.975); transition: background-color var(--fast) linear, transform var(--fast) linear; }
-.btn:disabled { opacity: .4; }
-.btn:focus { outline: none; }
-.btn:focus-visible { box-shadow: 0 0 0 1px var(--ground), 0 0 0 2px var(--accent), 0 0 6px 3px var(--focus-glow); }
-@media (prefers-reduced-motion: reduce) { .btn, .btn:active:not(:disabled) { transform: none; } }
+.boxes { display: flex; gap: 14px; }
+.boxes .group { display: grid; grid-template-columns: repeat(4, 28px); gap: 5px; }
+.box {
+  display: grid; place-items: center; height: 40px; border-radius: 7px;
+  background: var(--field); border: 0.5px solid rgba(var(--tints), .13);
+  font-size: 17px; line-height: 22px; color: var(--ink);
+  transition: background-color var(--base) var(--ease-out), color var(--base) var(--ease-out),
+              border-color var(--fast) linear, box-shadow var(--base) var(--ease-out);
+}
+.cells:hover:not(:focus-within) .box { border-color: rgba(var(--tints), .22); }
+.cells:focus-within .box.next { border-color: rgba(var(--tints), .2); box-shadow: 0 0 0 3px rgba(var(--tints), .03); }
+.cells:focus-within .box.next::after {
+  content: ""; width: 1.5px; height: 20px; border-radius: 1px; background: var(--ink);
+  animation: blink 1.1s steps(1) infinite;
+}
+.box.landed { animation: landed 220ms var(--overshoot); }
+/* While the code is checked, a wave runs along the cells, each rising a point and brightening in turn, as
+   xAI's three dots do (1.3 s, ease-in-out, one after another), a little subtler than theirs (the owner, 29
+   October 2026: “maek that movement a bit subtler”); no words with it. */
+.card.sending .box { animation: wave 1.3s ease-in-out infinite; animation-delay: calc(var(--i) * 60ms); }
+.card.sending .box.next::after, .card.done .box.next::after { content: none; }
+.cells.wrong { animation: shake 360ms var(--ease-out); }
+.card.done .box { background: transparent; border-color: transparent; box-shadow: none; transition-delay: calc(var(--i) * 30ms); }
+/* On a phone, narrower: the cells as they were before; on the narrowest, narrower still. */
+@media (max-width: 480px) {
+  .boxes { gap: 12px; } .boxes .group { grid-template-columns: repeat(4, 22px); gap: 4px; }
+  .box { height: 34px; font-size: 15px; }
+}
+@media (max-width: 380px) { .boxes { gap: 8px; } .boxes .group { grid-template-columns: repeat(4, 20px); } }
 
-.problem { font-size: 13px; line-height: 19px; color: var(--quiet); min-height: 19px; }
+/* What the cloud said, under the field: quiet, arriving as the form did. */
+.problem { min-height: 20px; font-size: 14px; line-height: 20px; color: var(--quiet); text-wrap: balance; }
+.problem.shown { animation: arrive var(--settle) var(--ease-out); }
+.card.done .field { color: var(--secondary); }
+.card.done .problem { color: var(--secondary); }
 
-.app { margin-top: 40px; font-size: 13px; line-height: 19px; color: var(--quiet); }
-.app a { color: var(--secondary); text-decoration: underline; text-decoration-color: rgba(82, 81, 78, .35); text-underline-offset: 3px; border-radius: 4px; }
-.app a:hover { color: var(--ink); text-decoration-color: currentColor; }
-.app a:focus { outline: none; }
-.app a:focus-visible { box-shadow: 0 0 0 1px var(--ground), 0 0 0 2px var(--accent), 0 0 6px 3px var(--focus-glow); }
-.app p { margin-top: 2px; }
+/* The way between the two forms: the one going steps back, a little up and small, and the words under it
+   fade as they change; the other arrives. The download's way in is the same step back, slower. */
+.col > .stepping { animation: leave 160ms var(--ease-out) forwards; pointer-events: none; }
+.col > .leaving { animation: leave 240ms var(--ease-out) forwards; pointer-events: none; }
+
+/* The download, once a code was one: it rises into the form's place, a little low and small, with give,
+   and what it needs settles under it a beat later. As wide as its words, as the text box is (the owner, 29
+   October 2026: consistent with the waitlist's conventions): its faint fill, hairline and corners of 10, its
+   words light grey (28 October: “option 2 … if you could make the text light gray”), ink under the pointer,
+   the edge darker with the text box's ring on focus; the Apple logo before them on Apple's systems. */
+.get { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 28px; }  /* what it needs well below the button (the owner, 29 October 2026: “should be lower”) */
+.get[hidden] { display: none; }
+.get.shown { animation: rise 480ms var(--overshoot) both; }
+.get.shown .version { animation: arrive var(--slow) var(--ease-out) 200ms both; }
+.download {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 48px; padding: 0 24px; border-radius: 10px;
+  border: 0.5px solid rgba(var(--tints), .13); background: var(--field); color: var(--quiet); text-decoration: none;
+  font-size: 15px; line-height: 20px; font-weight: var(--regular);
+  transition: border-color var(--fast) linear, color var(--fast) linear, box-shadow var(--base) var(--ease-out),
+              transform var(--slow) var(--overshoot);
+}
+.download:hover { border-color: rgba(var(--tints), .22); color: var(--ink); }
+.download .mark { display: none; font-size: 16px; line-height: 1; margin-top: -2px; }
+.apple .download .mark { display: inline; }
+.download:active { transform: scale(.985); transition: border-color var(--fast) linear, color var(--fast) linear, transform var(--fast) linear; }
+.download:focus { outline: none; }
+.download:focus-visible { border-color: rgba(var(--tints), .2); box-shadow: 0 0 0 3px rgba(var(--tints), .03); }
+.get.quiet .download:focus-visible { box-shadow: none; }
+.version { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; line-height: 18px; color: var(--quiet); }
+.version .release:empty { display: none; }
+
+/* The other way in: "Have an invitation code? Enter it", or back, "Join the waitlist". */
+.switch { margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--quiet); transition: opacity 160ms var(--ease-out); }
+.switch.swapping { opacity: 0; }
+.link {
+  padding: 0; border: 0; background: none; cursor: pointer;
+  font: inherit; color: var(--link); border-radius: 4px;
+  transition: color var(--fast) linear;
+}
+.link:hover { color: var(--ink); }
+/* "Join the waitlist", standing alone under the code, is the same link as "Enter it". */
+.link:focus { outline: none; }
+.link:focus-visible { box-shadow: 0 0 0 2px var(--ground), 0 0 0 4px var(--edge-strong); }
+
+/* Light or Dark, chosen here (the owner, 29 October 2026: “the symbol for dark and light is tha thalf moon and
+   then fill all white on dark mode”, “sort of like this https://docs.x.ai/overview”, “dont do fill for the
+   moon”): at the window's top right, SF Symbols' moon, quiet in Light and white in Dark. */
+.theme {
+  -webkit-appearance: none; appearance: none; margin: 0; padding: 0; border: 0; background: none; cursor: pointer;
+  position: fixed; z-index: 2; top: max(14px, env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px));
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; color: var(--quiet);
+  animation: arrive var(--slow) var(--ease-out) 340ms both;
+  transition: color var(--fast) linear, background-color var(--fast) linear;
+}
+.theme:hover { color: var(--ink); }
+.theme:focus { outline: none; }
+.theme:focus-visible { box-shadow: 0 0 0 2px var(--ground), 0 0 0 4px var(--edge-strong); }
+.theme .drawn { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.13; stroke-linejoin: round; }
+:root[data-theme="dark"] .theme { color: var(--ink); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme { color: var(--ink); }
+}
+
+/* An SF Symbol, as the system's font draws it on Apple's own systems: its character, at the text's weight.
+   Elsewhere, where no font has them, a drawing of the same shape stands in (`.drawn`), drawn to the symbol's
+   measured size, line and place in its button (the owner, 29 October 2026: “the non apple should more closely
+   match the apple”). */
+.sym { display: none; font-family: var(--font); font-style: normal; line-height: 1; }
+.apple .sym { display: block; }
+.apple .drawn { display: none; }
+.theme .sym { font-size: 15px; font-weight: 400; }
+.theme .sym::before { content: "\1001B9"; }   /* moon */
+
+/* The page's footer, small and faint (the owner, 29 October 2026: “should be smaller. lighter in light mode and
+   darker on dark mode. on the bottom also put small © 2026 L LLC”): the copyright, and the privacy page with
+   the policy and the terms. */
+.foot {
+  padding: 0 max(24px, env(safe-area-inset-right, 0px)) max(22px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
+  display: flex; justify-content: center; gap: 16px;
+  font-size: 11px; line-height: 14px; color: var(--faint);
+}
+.foot a { color: var(--faint); border-radius: 4px; transition: color var(--fast) linear; text-decoration: none; }
+.foot a:hover { color: var(--ink); }
+.foot a:focus { outline: none; }
+.foot a:focus-visible { box-shadow: 0 0 0 2px var(--ground), 0 0 0 4px var(--edge-strong); }
+
+@keyframes arrive { from { opacity: 0; transform: translateY(3px); } }
+@keyframes settle { from { opacity: 0; transform: translateY(4px) scale(.96); } }
+@keyframes land { from { opacity: 0; transform: translateX(-2px); } }
+@keyframes give { 40% { transform: scale(1.06); } }
+@keyframes leave { to { opacity: 0; transform: translateY(-2px) scale(.99); } }
+@keyframes rise { from { opacity: 0; transform: translateY(4px) scale(.985); } }
+@keyframes landed { from { transform: scale(.92); color: transparent; } 60% { color: var(--ink); } }
+@keyframes wave { 0%, 55%, 100% { opacity: .6; transform: translateY(0); } 25% { opacity: 1; transform: translateY(-1px); } }
+@keyframes shake { 20% { transform: translateX(-3px); } 45% { transform: translateX(2px); } 70% { transform: translateX(-1px); } }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .col > *, .col > .icon, .title .badge, .foot, .card.shown, .card.done .problem { animation: none; }
+  .icon, .icon:hover, .icon img { transition: none; transform: none; }
+  .card.sending .go, .go:active:not(:disabled) { animation: none; transform: none; }
+  .col > .leaving, .col > .stepping, .get.shown, .get.shown .version, .problem.shown { animation: none; }
+  .switch { transition: none; }
+  .theme { animation: none; }
+  body { transition: none; }
+  .download, .download:active { transition: none; transform: none; }
+  .box.landed, .card.sending .box, .cells.wrong { animation: none; }
+  .card.done .box { transition-delay: 0s; }
+}

@@ -1,204 +1,259 @@
-/* The gate. The site is sealed: every page, its style and script, and every picture are AES-256-GCM
-   payloads in vault/, under a key drawn from the invitation code with PBKDF2-SHA256. The code opens
-   them here, in the browser; the page then takes this one's place. The key (never the code) stays
-   in this tab's sessionStorage, so going between pages does not ask again. */
+/* The site's door, which is the whole site for now (Site/build.mjs `door`): the waitlist, and behind
+   "Have an invitation code?" a box for each of a code's letters. An address goes to Compile's cloud's waitlist
+   (Cloud/src/waitlist.ts), which answers this page alone. A code goes to the cloud too, which answers a
+   code Compile made with where Compile downloads from; the code's form then gives way to the download,
+   which rises into its place. Nothing is kept here. The site is made from Site/ in the Ground repository;
+   change it there, never here. */
 (function () {
   'use strict';
 
   var ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   var LENGTH = 12;
-  var STORE = 'ground.key';
-  var WRONG = 'That code isn’t right. Try again.';
-  var FAILED = 'The page couldn’t load. Try again.';
-  var OLD = 'This browser can’t open the page. Try another.';
 
-  var vault = JSON.parse(document.getElementById('vault').textContent);
-  var form = document.getElementById('gate');
+  var cloud = document.querySelector('.gate').getAttribute('data-cloud');
+  var asking = document.getElementById('ask');
+  var email = document.getElementById('email');
+  var send = document.getElementById('send');
+  var said = document.getElementById('asked');
+  var entering = document.getElementById('enter');
   var field = document.getElementById('code');
-  var go = document.getElementById('go');
   var problem = document.getElementById('problem');
-  var encoder = new TextEncoder();
-  var decoder = new TextDecoder();
-  var working = false;
+  var get = document.getElementById('get');
+  var download = document.getElementById('download');
+  var switchLine = document.getElementById('switch-line');
+  var words = document.getElementById('switch-words');
+  var toggle = document.getElementById('switch');
+  var sending = false, checking = false;
 
-  /* A code as it was typed, in any case, with or without its dashes and spaces; null if it can't be
-     one (Cloud/src/invitations.ts `code()`). */
-  function normalized(typed) {
-    var plain = String(typed).toUpperCase().replace(/[\s-]/g, '');
-    if (plain.length !== LENGTH) return null;
-    for (var i = 0; i < plain.length; i++) if (ALPHABET.indexOf(plain[i]) < 0) return null;
+  function reduced() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function appear(element) {
+    element.hidden = false;
+    element.classList.remove('shown');
+    void element.offsetWidth;
+    element.classList.add('shown');
+  }
+  /* A message under a field, arriving as the form did; nothing, at once. */
+  function say(element, text) {
+    element.textContent = text;
+    if (text) appear(element); else element.classList.remove('shown');
+  }
+
+  // MARK: The waitlist
+
+  function looksRight() { return /^[^\s@]+@[^\s@]+\.[^\s@.]{2,}$/.test(email.value.trim()); }
+  function readyAsk() { send.disabled = sending || asking.classList.contains('done') || !looksRight(); }
+
+  email.addEventListener('input', function () { say(said, ''); readyAsk(); });
+  asking.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (sending || !looksRight()) return;
+    sending = true;
+    asking.classList.add('sending');
+    readyAsk();
+    // The button's filled arrow says the address is going; no words with it (the owner, 29 October 2026).
+    say(said, '');
+    fetch(cloud + '/v1/waitlist', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: email.value.trim() })
+    }).then(function (response) {
+      if (response.status === 202) {
+        asking.classList.add('done');
+        email.readOnly = true;
+        say(said, 'You’re on the waitlist.');
+        return;
+      }
+      // 429: this network's five a day, or everyone's day's asks (Cloud/src/waitlist.ts): both are today's.
+      say(said, response.status === 400 ? 'That isn’t an email address.'
+        : response.status === 429 ? 'Too many addresses were left today. Try again tomorrow.'
+        : 'Compile couldn’t save your address. Try again.');
+    }, function () {
+      say(said, 'Compile couldn’t connect. Check your internet connection and try again.');
+    }).then(function () { sending = false; asking.classList.remove('sending'); readyAsk(); });
+  });
+
+  // MARK: An invitation code
+
+  /* A box for each of the code's twelve letters and digits (the owner, 28 October 2026: “the entry … should
+     just be a thing per character or digit”). One field, unseen, over the boxes takes what is typed or
+     pasted, in any case, with or without dashes and spaces; the boxes show it, a letter landing in each, and
+     the box that is next shows a caret. A letter no code has (I, L, O, 0, 1) isn't taken. The code checks
+     itself once its twelfth letter is in (Cloud/src/invitations.ts `code()`). */
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#cells .box'));
+  var cells = document.getElementById('cells');
+  var drawn = '', refused = '';
+
+  function plainOf(text) {
+    var upper = String(text).toUpperCase(), plain = '';
+    for (var i = 0; i < upper.length && plain.length < LENGTH; i++) if (ALPHABET.indexOf(upper[i]) >= 0) plain += upper[i];
     return plain;
   }
-  function plainOf(text) { return String(text).toUpperCase().replace(/[\s-]/g, ''); }
-  function shown(plain) { return (plain.match(/.{1,4}/g) || []).join('-'); }
-
-  function bytes(base64) {
-    var s = atob(base64), out = new Uint8Array(s.length);
-    for (var i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
-    return out;
+  /* The caret stays after the last letter: a letter is taken back from the end, as it was given. */
+  function toEnd() {
+    var end = field.value.length;
+    if (field.selectionStart !== end || field.selectionEnd !== end) { try { field.setSelectionRange(end, end); } catch (e) {} }
   }
-  function base64(data) {
-    var s = '';
-    for (var i = 0; i < data.length; i++) s += String.fromCharCode(data[i]);
-    return btoa(s);
+  function draw() {
+    var plain = plainOf(field.value);
+    if (field.value !== plain) field.value = plain;
+    toEnd();
+    boxes.forEach(function (box, i) {
+      var letter = plain[i] || '';
+      if (box.textContent !== letter) {
+        box.textContent = letter;
+        box.classList.remove('landed');
+        if (letter && i >= drawn.length && !reduced()) { void box.offsetWidth; box.classList.add('landed'); }
+      }
+      box.classList.toggle('next', i === plain.length);
+    });
+    drawn = plain;
+    return plain;
   }
-  function remember(raw) { try { sessionStorage.setItem(STORE, base64(raw)); } catch (e) {} }
-  function remembered() { try { var v = sessionStorage.getItem(STORE); return v ? bytes(v) : null; } catch (e) { return null; } }
-  function forget() { try { sessionStorage.removeItem(STORE); } catch (e) {} }
-
-  function say(words) { problem.textContent = words || ''; }
-  function ready() { go.disabled = working || normalized(field.value) === null; }
-  function showGate() { document.documentElement.className = ''; }
-
-  /* Typing puts the code in fours, between dashes, as Ground shows it ("7KQM-X9PA-3RTW"). */
-  function format() {
-    var value = field.value;
-    var caret = field.selectionStart == null ? value.length : field.selectionStart;
-    var before = plainOf(value.slice(0, caret)).length;
-    var plain = plainOf(value).slice(0, LENGTH);
-    var next = shown(plain);
-    if (next !== value) {
-      field.value = next;
-      var n = Math.min(before, plain.length);
-      var at = Math.min(next.length, n + Math.floor(n / 4) - (n > 0 && n % 4 === 0 && n === plain.length ? 1 : 0));
-      try { field.setSelectionRange(at, at); } catch (e) {}
-    }
-    if (problem.textContent && problem.textContent !== FAILED) say('');
-    ready();
-  }
-  field.addEventListener('input', format);
-  field.addEventListener('keydown', function (event) {
-    // Backspace just after a dash takes the letter before it, not only the dash.
-    if (event.key !== 'Backspace' || field.selectionStart !== field.selectionEnd) return;
-    var at = field.selectionStart;
-    if (at > 1 && field.value[at - 1] === '-') {
-      event.preventDefault();
-      field.value = field.value.slice(0, at - 2) + field.value.slice(at);
-      try { field.setSelectionRange(at - 2, at - 2); } catch (e) {}
-      format();
-    }
+  field.addEventListener('input', function () {
+    var plain = draw();
+    say(problem, '');
+    if (plain.length === LENGTH && plain !== refused) check();
   });
+  ['focus', 'click', 'keyup', 'select'].forEach(function (kind) { field.addEventListener(kind, toEnd); });
 
-  var subtle = window.crypto && window.crypto.subtle;
-
-  function fetched(path) {
-    return fetch(path, { cache: 'no-cache', credentials: 'same-origin' }).then(function (r) {
-      if (!r.ok) throw new Error('missing');
-      return r.arrayBuffer();
-    });
+  /* Not a code: the boxes shake a little, as a Mac's password field does, and keep what was typed to put right. */
+  function shake() {
+    if (reduced()) return;
+    cells.classList.remove('wrong');
+    void cells.offsetWidth;
+    cells.classList.add('wrong');
   }
-  // The sealed manifest, asked for at once so it is here by the time the code is.
-  var manifestBox = fetched(vault.manifest);
-  manifestBox.catch(function () {});
+  cells.addEventListener('animationend', function (event) { if (event.target === cells) cells.classList.remove('wrong'); });
 
-  function opened(key, sealed, name) {
-    var data = new Uint8Array(sealed);
-    return subtle.decrypt({ name: 'AES-GCM', iv: data.subarray(0, 12), additionalData: encoder.encode(name), tagLength: 128 },
-      key, data.subarray(12)).then(function (plain) { return new Uint8Array(plain); });
-  }
-  function keyFrom(raw) { return subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['decrypt']); }
-  function derived(plain) {
-    return subtle.importKey('raw', encoder.encode(plain), 'PBKDF2', false, ['deriveBits']).then(function (base) {
-      return subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: bytes(vault.salt), iterations: vault.iterations }, base, 256);
-    }).then(function (bits) { return new Uint8Array(bits); });
-  }
-
-  /* The manifest, opened with this key: null if the key is wrong. */
-  function manifestWith(key) {
-    return manifestBox.then(function (sealed) {
-      return opened(key, sealed, 'manifest').then(function (plain) {
-        return JSON.parse(decoder.decode(plain));
-      }, function () { return null; });
-    });
-  }
-
-  function file(key, manifest, path) {
-    var entry = manifest.files[path];
-    if (!entry) return Promise.reject(new Error('missing ' + path));
-    return fetched(entry.blob).then(function (sealed) { return opened(key, sealed, path); });
+  /* The code was one: the boxes' tint clears, one after another, leaving the code, which holds a moment; the
+     form and the way to the waitlist step back, and the download rises into their place. */
+  function opened(link) {
+    entering.classList.add('done');
+    field.readOnly = true;
+    field.blur();
+    download.href = link;
+    var calm = reduced();
+    // The column keeps its height while the form gives way, so nothing above it moves.
+    var column = document.querySelector('.col');
+    column.style.minHeight = column.offsetHeight + 'px';
+    window.setTimeout(function () {
+      entering.classList.add('leaving');
+      switchLine.classList.add('leaving');
+      window.setTimeout(function () {
+        entering.hidden = true;
+        switchLine.hidden = true;
+        appear(get);
+        // The download takes the focus the code had, without a ring until a key is pressed.
+        get.classList.add('quiet');
+        document.addEventListener('keydown', function loud() { get.classList.remove('quiet'); document.removeEventListener('keydown', loud); });
+        try { download.focus({ preventScroll: true }); } catch (e) { download.focus(); }
+      }, calm ? 0 : 240);
+    }, calm ? 0 : 820);
   }
 
-  /* The page, opened, in this one's place: its pictures as blob URLs, its style and script inline. */
-  function show(key, manifest) {
-    var page = vault.page;
-    return Promise.all([
-      file(key, manifest, page),
-      file(key, manifest, 'assets/site.css'),
-      file(key, manifest, 'assets/site.js')
-    ]).then(function (parts) {
-      var html = decoder.decode(parts[0]);
-      var css = decoder.decode(parts[1]);
-      var js = decoder.decode(parts[2]);
-      var names = [];
-      html.replace(/pictures\/[A-Za-z0-9_-]+\.jpg/g, function (m) { if (names.indexOf(m) < 0) names.push(m); return m; });
-      return Promise.all(names.map(function (name) {
-        return file(key, manifest, name).then(function (data) {
-          return URL.createObjectURL(new Blob([data], { type: 'image/jpeg' }));
+  /* What the download is, as the cloud reads it from Sparkle's feed when it answers the code (the owner, 29
+     October 2026: “make sure its connected to sparkle somehow”): its version and build, its size, and the macOS
+     it needs, in place of what the page said when it was made. */
+  function newest(release) {
+    var plain = /^[0-9]{1,4}(\.[0-9]{1,4}){0,3}$/;
+    if (!release || !plain.test(String(release.version)) || !/^[0-9]{1,7}$/.test(String(release.build))) return;
+    var said = 'Version ' + release.version + ' (' + release.build + ')';
+    if (typeof release.bytes === 'number' && release.bytes > 0) said += ' \u00B7 ' + Math.round(release.bytes / 1e6) + ' MB';
+    get.querySelector('.release').textContent = said;
+    if (plain.test(String(release.minimum))) get.querySelector('.system').textContent = 'macOS ' + String(release.minimum).replace(/\.0$/, '') + ' or later';
+  }
+
+  function check() {
+    var plain = plainOf(field.value);
+    if (plain.length !== LENGTH || checking || entering.classList.contains('done')) return;
+    checking = true;
+    entering.classList.add('sending');
+    // The cells' wave says the code is being checked; no words with it (the owner, 29 October 2026).
+    say(problem, '');
+    fetch(cloud + '/v1/site/download', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ code: plain })
+    }).then(function (response) {
+      if (response.status === 200) {
+        return response.json().then(function (answer) {
+          if (!answer || typeof answer.download !== 'string') throw new Error('no download');
+          entering.classList.remove('sending');
+          say(problem, '');
+          if (answer.release) newest(answer.release);
+          opened(answer.download);
         });
-      })).then(function (urls) {
-        var url = {};
-        names.forEach(function (name, i) { url[name] = urls[i]; });
-        html = html.replace(/pictures\/[A-Za-z0-9_-]+\.jpg/g, function (m) { return url[m]; });
-        html = html.replace(/<link rel="stylesheet" href="assets\/site\.css">/, function () {
-          return '<style>' + css.replace(/<\/style/gi, '<\\/style') + '</style>';
-        });
-        html = html.replace(/<script src="assets\/site\.js"><\/script>/, function () {
-          return '<script>' + js.replace(/<\/script/gi, '<\\/script') + '</script>' +
-            '<script>(function(){var h=location.hash.slice(1);if(!h)return;var t=document.getElementById(decodeURIComponent(h));' +
-            'if(!t)return;function j(){t.scrollIntoView({behavior:"instant",block:"start"});}j();addEventListener("load",j);})();</script>';
-        });
-        html = html.replace(/<head>/, function () { return '<head>\n<meta name="robots" content="noindex, nofollow">'; });
-        document.open();
-        document.write(html);
-        document.close();
-      });
-    });
-  }
-
-  function unlock(raw, fromStore) {
-    return keyFrom(raw).then(function (key) {
-      return manifestWith(key).then(function (manifest) {
-        if (!manifest) return false;
-        if (!fromStore) remember(raw);
-        return show(key, manifest).then(function () { return true; });
-      });
-    });
-  }
-
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    var plain = normalized(field.value);
-    if (!plain || working) return;
-    if (!subtle) { say(OLD); return; }
-    working = true;
-    ready();
-    say('');
-    derived(plain).then(function (raw) { return unlock(raw, false); }).then(function (opened) {
-      if (opened) return;
-      working = false;
-      say(WRONG);
-      ready();
+      }
+      entering.classList.remove('sending');
+      if (response.status === 404) { refused = plain; shake(); }
+      say(problem, response.status === 404 ? 'That isn’t an invitation code. Check it and try again.'
+        : response.status === 429 ? 'Too many codes were tried from here today. Try again tomorrow.'
+        : 'Compile couldn’t check the code. Try again.');
       field.focus();
-      field.select();
-    }, function () {
-      working = false;
-      // The manifest may not have come: ask for it again next time.
-      manifestBox = fetched(vault.manifest);
-      manifestBox.catch(function () {});
-      say(FAILED);
-      ready();
-    });
-  });
-
-  // This tab opened the site before: open it again without asking.
-  var raw = remembered();
-  if (raw && subtle) {
-    unlock(raw, true).then(function (opened) {
-      if (!opened) { forget(); showGate(); field.focus(); }
-    }, function () { showGate(); say(FAILED); });
-  } else {
-    showGate();
-    field.focus();
+    }).catch(function () {
+      entering.classList.remove('sending');
+      say(problem, 'Compile couldn’t connect. Check your internet connection and try again.');
+    }).then(function () { checking = false; });
   }
-  ready();
+  entering.addEventListener('submit', function (event) { event.preventDefault(); check(); });
+
+  /* The download's button carries the Apple logo, which only Apple's own systems' font has (U+F8FF, as SF
+     Pro draws it): elsewhere the button has its words alone. */
+  if (/Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || /Macintosh|iPhone|iPad/.test(navigator.userAgent || '')) {
+    document.documentElement.classList.add('apple');
+  }
+
+  // MARK: Light or Dark
+
+  /* The moon at the top right: Dark, or Light again, kept in this browser (the owner, 29 October 2026: “the
+     symbol for dark and light is tha thalf moon and then fill all white on dark mode”). Until it is used, the
+     page is as the reader's system is. */
+  var theme = document.getElementById('theme');
+  var root = document.documentElement;
+  var systemDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function isDark() {
+    var chosen = root.getAttribute('data-theme');
+    return chosen ? chosen === 'dark' : !!(systemDark && systemDark.matches);
+  }
+  function showTheme() { theme.setAttribute('aria-pressed', isDark() ? 'true' : 'false'); }
+  theme.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('appearance', next); } catch (e) {}
+    showTheme();
+  });
+  if (systemDark && systemDark.addEventListener) systemDark.addEventListener('change', showTheme);
+  showTheme();
+
+  // MARK: Between the two
+
+  /* The form going steps back and the words under it fade as they change; then the other form arrives, the
+     same height, so nothing else moves. On a touch screen the other form arrives at once, in the tap itself:
+     a phone raises its keyboard only for a field focused there. */
+  var swap = 0;
+  function touch() { return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches); }
+  function mode(ask) {
+    var going = ask ? entering : asking, coming = ask ? asking : entering;
+    window.clearTimeout(swap);
+    function arrive() {
+      going.hidden = true;
+      going.classList.remove('stepping');
+      appear(coming);
+      // Back to the waitlist, in its words alone (the owner, 28 October 2026: “cut 'new to compile'”).
+      words.hidden = !ask;
+      toggle.textContent = ask ? 'Enter it' : 'Join the waitlist';
+      toggle.setAttribute('aria-controls', ask ? 'enter' : 'ask');
+      switchLine.classList.remove('swapping');
+      if (!ask) field.focus();
+      else if (!asking.classList.contains('done')) email.focus();
+    }
+    if (reduced() || touch()) { arrive(); return; }
+    going.classList.add('stepping');
+    switchLine.classList.add('swapping');
+    swap = window.setTimeout(arrive, 160);
+  }
+  toggle.addEventListener('click', function () { mode(asking.hidden); });
+
+  readyAsk();
+  draw();
 })();

@@ -1,0 +1,836 @@
+Compile Privacy Policy
+======================
+
+Version dated 27 October 2026.
+
+In short
+--------
+
+- Compile is a Mac app. Your library and boards live on your Macs. A board kept
+  Only on this Mac is never kept in Compile’s cloud. Its pictures, while Visual search is on, and
+  what you ask about it still pass through on their way to Claude.
+- Compile’s cloud keeps a directory of accounts, carries the boards you share, and passes what you
+  ask of Claude to Anthropic.
+- A private board is sealed from its first share, and its room in Compile’s cloud has no key to the
+  sealed part. What it held before its first share goes unsealed, and Compile’s cloud can read that
+  part. Compile asks first.
+- PDFs are the exception. A PDF on a board that isn’t kept Only on this Mac is kept in Compile’s
+  cloud: its file sealed on a private board, and the text your Mac read from it where Compile’s
+  cloud can read it, so it can be searched. That text isn’t end-to-end encrypted.
+- A public board is public: anyone can see it, in Compile and on the web.
+- Compile shows no ads and sells no data. It includes Sparkle for updates. It counts on your Mac
+  what is done in Compile. It sends the counts once a day, with nothing that says who or which Mac
+  sent them. You can turn this off.
+- The Feed suggests public boards, pictures and people beyond those you follow, learns from what
+  you do with its suggestions, and says why it suggests each.
+- With an account, Compile also learns from what you do in it, linked to your account: which of its
+  own commands and steps you use, and when. Never your pictures, boards or what you type. Claude
+  sorts what you write to Compile into themes. You can turn this off in Settings ▸ Privacy.
+
+Who is responsible
+------------------
+
+Compile’s operator runs Compile, and is the controller responsible for the processing this policy
+describes. For privacy questions or requests, while signed in, choose Write to Compile… in the
+Account menu. That note is linked to your account and includes your Compile and macOS versions.
+
+What an account needs
+---------------------
+
+To make an account, Compile needs a username and a sign-in with Apple or Google (with Google, your
+email address too). It also needs your Mac’s public key and certificate, and, while Compile is by
+invitation, an invitation code. You also confirm you are 16 or older. Without these, Compile can’t
+make an account. Anything else you give, such as your name or a picture, is up to you.
+
+Without an account you can still use Compile on your Mac: your library, boards kept Only on this Mac,
+search, and image recognition on your Mac. Sharing boards, following people, the Feed and Claude need an
+account.
+
+On your Mac
+-----------
+
+Your library, your boards and Compile’s search index start on your Mac. Compile’s on-device models
+(what kind of picture it is, the words in a screenshot, what it shows) run on your Mac and send
+nothing.
+
+Compile adds the boards you belong to, private ones too, to your Mac’s Spotlight index, by name and
+people. Your own boards and public ones also go in with their words and a preview. Public boards you
+only visit are left out. Anyone using your Mac may find these in Spotlight. Compile doesn’t send this
+index to its cloud.
+
+Copying or dragging puts pictures on your Mac’s clipboard (or drag pasteboard). Compile’s own formats
+there, for board items and pictures, can be read by other apps. They name your files by a token that
+only the same run of Compile can read back, not by where they are. Other apps get a copied picture as
+a copy of its file without its metadata, and can see where that copy is. Compile doesn’t send the
+clipboard to its cloud. macOS’s clipboard features and other apps follow their own rules.
+
+Compile fetches a link’s title and picture from the web for cards you or people you follow placed, or
+when you choose Load Preview. For cards kept in Compile’s cloud, only the Mac of whoever placed
+the card asks the web page; everyone else draws its picture and icon from Compile’s cloud.
+The site sees the fetching Mac’s IP address. When you bring in an Are.na
+channel by its link, your Mac reads it from Are.na and downloads its pictures from where they are
+kept. Those sites see your IP address too. If your Boards folder or library is in Dropbox or iCloud
+Drive, that service carries those files under its own terms.
+
+What leaves your Mac, and who keeps it
+--------------------------------------
+
+Compile’s directory (accounts)
+
+What it gets:
+- Your username, and the private ID Apple or Google gives Compile (your name isn’t asked for).
+- If you sign in with Google, the email address it has verified for you, which other people on
+  Compile never see. Apple isn’t asked for an email.
+- Your public key and its fingerprint, which tell other Macs who you are.
+- If you give them, your full name and profile picture, and an Instagram handle (only an earlier
+  version of Compile asked for one).
+- Your choices of who may find you, see your name, and see whom you follow and who follows you.
+- For each of your Macs: its certificate (without your name) and its name in System Settings. Also
+  when it was added and last seen, and whether it signed out or you removed it.
+- The ids of the boards you are on, not their names or contents, so your other Macs find them. Also
+  which boards’ rooms you founded, which count toward your account’s rooms and storage.
+- Whom you follow, who follows you, requests to follow and whom you block, unsealed so the directory
+  can act on them.
+- Letters to you: an invitation to a board, or a note about your public work. The note says someone
+  placed pictures you found on a public board of theirs, or forked a public board of yours. They are
+  sealed for your Mac, and the directory keeps no record of who sent them.
+- Reports you send, and feedback and requests you send with Compile’s and macOS’s versions. Your Mac
+  sorts each note into feedback or a request first, with Apple’s on-device model if it has it.
+- Your plan, Stripe’s ids for you, and your credits and limits.
+- A record of each use of Claude: when, what kind, which model, how large and what it cost, but not
+  what was asked.
+- Counts that enforce limits, naming your account or your network’s IP address.
+- What you did with the Feed’s suggestions, what it showed you, and your own ranker for them.
+
+How long: until you delete your account, except:
+- counts: 2 days
+- what you did with the Feed’s suggestions: 180 days; what it showed you: 14 days
+- a letter: until your Mac fetches it, 30 days at most
+- a request to follow that nobody answers: 90 days
+- each use of Claude: 40 days
+- a username you give up: held a month for nobody else, with nothing attached
+
+Feedback and requests are kept for 12 months, or until you delete your account if sooner.
+
+Invitation codes. While Compile is by invitation, the directory keeps each code: whose it is to
+give, when it was made, and when it made an account. Until a code is used, its web page tells
+Compile’s cloud when it is opened, and whether on a Mac; the directory keeps the first and the last
+time. For a code Compile’s operator sends to someone it invites from a list, it also keeps which
+account the code made. Your own codes are deleted with your account.
+
+Each board’s room
+
+Every board not kept Only on this Mac has a room in Compile’s cloud. It carries the board between its
+people’s Macs, and holds it for a Mac that was offline.
+
+What it gets:
+- The board’s history, signed by its people’s Macs. On a private board it is sealed from the first
+  share, except which Mac made each change, and when.
+- The certificates of the people on it, with the names they gave Compile.
+- The keys that let Macs in, not those that open what is sealed.
+- Pictures, so they can be fetched while whoever placed them is offline, sealed on a private board.
+- On a board whose PDFs are kept in Compile’s cloud, an index of the words of its PDFs, readable by
+  the room, so they can be searched.
+- Each of its Macs’ builds and when it last heard from them.
+- An invitation link’s mailbox and preview (a picture of the board and its people’s names). These
+  are sealed with a key from the link, which the room doesn’t hold.
+- On a public board: all of it unsealed, and a picture of the board for its page. Also, for each
+  network that read it, a hash of its IP address. Earlier days’ hashes are deleted when someone
+  first reads the board on a later day; until then they stay. The hash uses no secret, so an IPv4
+  address could be worked out from it.
+
+How long: while anyone is on the board. An invitation’s preview is deleted when its link is used
+up, expires or is closed. When a public board goes private, its room shuts out everyone not on it
+and removes its pictures. It also lets go of its PDFs’ open files, which its people’s Macs put up again sealed. Ninety days after the last person on a board throws it away, its room is
+due for deletion. If its removal from Compile’s search is still pending, the room waits for that
+first. What someone placed stays in the board’s history after they leave, for the people on it.
+
+PDFs on shared boards
+
+When you place a PDF on a board that isn’t kept Only on this Mac, your Mac reads it, every page,
+scanned pages by text recognition on your Mac. It sends Compile’s cloud the file as it is, sealed
+with the board’s key on a private board and unsealed on a public one, and a picture of its first
+page the same way. It also sends the text it read, in passages with their page and lines and the
+PDF’s title. Compile’s cloud keeps the file, picture and text in Cloudflare R2, where it can read the
+text: it isn’t end-to-end encrypted. A PDF’s text and vectors are kept separately for each board
+and supplied by the Mac that places it. Only people on the board can reach any of it,
+and on a public board anyone who can see it. Compile’s directory keeps which boards hold what, its
+size, and which account sent it, for storage limits and Compile’s costs.
+
+When you ask about a PDF’s visual contents, your Mac can download and open its file, then send
+pictures of the needed pages to Claude while Visual search is on. The verified file stays in the same
+cache as a PDF you open yourself.
+
+How long: while a board holds the PDF. Taking it off a board removes that board’s text and
+vectors. Its file and picture are deleted when no board holds them. Text kept under the previous
+shared format remains only while an existing placement still holds it. A board thrown away lets go of them after its 90 days. An upload left part way is deleted
+after a week. A PDF someone opened stays in a cache on their Mac until Compile or macOS clears it,
+and the picture of its first page stays with their copy of the board.
+
+Pictures and cards’ pictures
+
+On a board that isn’t kept Only on this Mac, Compile’s cloud keeps the lasting copy of its pictures
+as well as its PDFs. Each picture goes up as the copy that may leave your Mac (without where, when
+or with what it was taken), sealed with the board’s key on a private board, as it goes to the
+board’s room today, under a name that says nothing of which picture it is. The picture and icon of
+a link card go up the same way, from the Mac of whoever placed the card, and everyone else on the
+board draws them from Compile’s cloud: their Macs no longer ask the web page, so the page sees only
+the person who placed the card. A picture you put on such a board from anywhere but your library (a
+file from the Finder or Photos, Add to Compile, a picture dragged from the web, a clipped page, one
+brought from Are.na or Instagram) is no longer copied into your library folder: it waits in Compile’s
+own folder until the cloud holds it, then in a cache that clears itself. The file you placed it from
+is only read, never moved, changed or removed, and pictures from your own library stay in your
+folder. A Mac puts up only what its person placed. When a board’s storage is full, its window says
+what didn’t go up, and nothing more is sent.
+
+- On your Mac. Pictures you receive, and cards’ pictures from Compile’s cloud, are kept in your
+  Mac’s caches folder, which macOS may empty and which isn’t backed up. Compile lets go of those shown
+  longest ago, except boards, PDFs and pictures you make available offline. That choice stays on
+  this Mac, in its preferences, and is never sent.
+- What Compile’s cloud keeps. The sealed copies in Cloudflare R2 while a board holds them, and
+  their names. On a public board, a picture anyone may see goes open and is named by its hash, as
+  today. When the board’s room has moved its pictures to the store, it empties what it kept.
+- Builds. Your Mac tells the board’s room, and Compile’s cloud when it asks for its settings,
+  which build of Compile it runs. The cloud counts builds by day, with nothing that names you or your
+  Mac, to know when no Mac still needs the old way pictures were kept. The room keeps each of its
+  Macs’ builds and when it last heard from them.
+
+Compile’s search across all of Compile
+
+- Public boards are listed in Compile’s search by default. A board’s people can turn that off.
+- For a public board listed in search, it also keeps the words of its PDFs, with each PDF’s title
+  and page, so search can find words inside them. They leave with the board or the PDF.
+- Pictures marked Hide from Search are never sent to it.
+- What you type is sent to Compile’s cloud to answer each search, and isn’t stored.
+- Compile’s cloud keeps each listed board’s name, id and maker. For each picture, it keeps the id,
+  caption, a small copy, numbers for matching look-alikes and size. It also keeps what Claude read
+  in it, and where it came from as the board’s signed history shows. These make public pictures
+  searchable, and connect copies of a picture.
+- When a board goes private, is taken down or thrown away, or its people turn listing off, Compile
+  asks search to remove it. If search can’t be reached, the removal is retried every minute until
+  confirmed, even after a room restarts. Until then the board may still show in search: removal
+  isn’t promised to be instant. A small copy is deleted when no listed board and no upload still
+  needs it. Copies people already made stay theirs.
+
+Your files in Compile’s cloud
+
+When you sign in, Compile adds a place called Compile to Finder’s sidebar, beside Dropbox, and macOS
+asks you to switch it on. Nothing goes there unless you put it there. Files you keep there are
+sealed on your Macs before they leave. Compile’s cloud keeps the sealed bytes (in Cloudflare R2),
+their size, when they changed and an id; their names and what is in them stay sealed. A file you
+delete leaves the cloud at once, and its record after 90 days. Signing out takes the place away
+from that Mac, keeping anything not yet sent.
+
+The find log (not turned on)
+
+When this is on, your Mac sends a 32-byte code for each day it takes in pictures, which commits to
+them. Without your key it says nothing about which pictures, or whose. The log is public and
+permanent. The directory counts what each account sends, for 2 days.
+
+Anthropic, for Claude
+
+Only when you use it:
+- Visual search: each picture, reduced to 1,024 pixels, and its file’s name. Hidden pictures are
+  never sent. Turn it off in Settings ▸ Library. When it is off, or Claude can’t be reached, a Mac
+  with Apple’s on-device model analyzes pictures locally, and that sends Anthropic nothing.
+- Asking in ⌘K: what you ask, the board, and your library’s words for what you ask and for the
+  selected pictures. When your words may mean them, also the names of your boards (up to 200) and an
+  overview of your library. Background readings need Plus; reading pictures on demand during an ask
+  is included in that ask’s budget. While Visual search is on, Claude may also see everything on the
+  board, whoever placed it: a picture of the board as laid out with each item marked, small pictures
+  of what is on it, a few pictures chosen for what you asked, sharper, and any picture or PDF page it
+  asks to look at. It may read the PDFs on the board that are on your Mac, or kept in Compile’s cloud for the board: how each one begins (up to
+  200 words), the passages that fit what you asked (up to sixteen, or twenty-four when you name a PDF or ask where something is said), and up to six pages at a time when
+  it asks for them. When the board’s PDFs on your Mac are not too long (about sixty pages of text, or thirty scanned),
+  each goes whole instead: every page’s
+  text, and a picture of each scanned page. Never a file itself. What earlier answers inferred about
+  a picture (who likely made it, when, where) is kept on your Mac, never backed up, and goes with later
+  asks about its board as an inference, never as a record; a picture you captioned carries none. With the board goes when each thing on it was placed, and
+  who placed it, named as “you” or “Person A”, never by name.
+- Reading: while Visual search is on, Claude reads once each picture you place on a board someone
+  else is on, or a public one. This lets search find it by what it shows. It goes shrunk to 1,024
+  pixels, with nothing of its name, captions or board. The reading is kept on your Mac, out of its
+  backups. It is also kept, for as long as the board is, in the room of each board you placed the
+  picture on. There it is sealed on a private board, and unsealed on a public one. A reading made
+  overnight waits in Compile’s cloud until your Mac collects it, a week at most.
+- Library passes: while Visual search is on, your Mac also sends Claude some of your library’s
+  words now and then. File names, 50 at a time, to name the buildings and architects in them. Your
+  library’s commonest tags, to group words that mean the same. And at night, up to 200 file names
+  with their captions and keywords, to suggest boards. Hidden pictures’ file names are never sent.
+
+When you use visual search or ask, Compile sends Anthropic no account id, username or name you gave Compile.
+But the pictures an ask tells Claude about may carry the name of the person who found them, and the
+site they came from. And Compile’s cloud may send Claude an account’s username and full name, with
+the name, Are.na page and website of someone invited from a list. This checks whether the account is
+theirs, and Compile’s operator confirms or rejects every such match. On a board other people are on, the board’s conversation keeps what you asked and what Claude
+answered, in the board’s history: sealed on a private board, unsealed on a public one.
+
+Boards connected to Compile’s cloud also keep a shared memory of questions, supported answers and
+follow-up questions contributed by their members. This helps answers arrive sooner and suggests
+questions about the board. This memory is encrypted with the board’s key, including on public
+boards, and available only to current members. Compile’s cloud keeps up to 100 entries per board for
+30 days; your Mac keeps an encrypted copy. Older board versions can help locate evidence, but
+aren’t replayed as current answers. Clearing your conversation removes your contributions from
+this cloud memory and the cached copy on that Mac; it does not erase other members’ contributions
+or copies they already received. Boards kept Only on this Mac do not contribute.
+
+A description made overnight waits in Compile’s cloud until your Mac collects it, a week at most.
+
+Anthropic’s published API policy is to delete what it is sent, and its answers, normally within 30
+days. There are exceptions for particular services, agreed terms, safety enforcement and legal
+requirements, so this is no promise that nothing is retained. Pictures sent overnight as one batch,
+with what Claude wrote of them, are kept by Anthropic up to 29 days. During an ask, Anthropic keeps
+the part each turn repeats for a few minutes, for your ask alone, to answer its next turn sooner.
+Its commercial terms forbid training models on its API customers’ content. See Anthropic’s API
+retention
+policy (https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data)
+and Commercial Terms (https://www.anthropic.com/legal/commercial-terms).
+
+Compile’s operator can look up an account by username or account ID. Its operator page shows the
+account’s plan, cloud storage, internal allowances, request counts and AI costs. Only the operator
+can see these detailed usage metrics; they are not shown in customer Settings, account menus or
+standard account exports.
+
+To see how well picture search works, Compile’s cloud counts descriptions and readings across everyone:
+whether each was made, and if not, why. It also counts which of an architect, a project, a place and
+a year each description named, and how many keywords it gave. These are words and numbers, never the
+picture, what Claude said of it, or whose it was. Compile’s operator sees the totals. It may also
+look over pictures on public boards, which anyone can see, with their captions and what readers
+agree they show.
+
+Stripe and billing
+
+You pay on Stripe’s own pages. Stripe gets your card details and whatever its pages ask for, and
+Compile sends it only your account’s id. Compile keeps Stripe’s ids for you, your plan’s state and
+your credits. It reads your card’s brand, last four digits and expiry, and your invoices, from
+Stripe, to show them. Deleting your account first deletes you as Stripe’s customer. Plus ends at
+once, without a refund of the time left in the period you paid for, and Stripe forgets your card.
+Stripe may keep transaction records after your account closes, to meet its legal duties; deleting
+your Compile account doesn’t erase them. See Stripe’s retention
+policy (https://support.stripe.com/questions/data-retention-policy).
+
+
+Sparkle, for app updates
+
+The Developer ID version of Compile includes Sparkle. When update checks are set up, it reads
+Compile’s update feed and downloads updates from Compile’s cloud, which sees your IP address. Each
+check says which build of Compile is asking. Compile’s cloud counts checks by build and by which of
+its web addresses was asked, with nothing about who or which network asked.
+
+Apple and Google
+
+Signing in with Apple or Google gives Compile a private ID for you. Compile asks Apple for no name and
+no email. It asks Google for your email address too, but not your name. Compile keeps the address if
+Google has verified it for your account, so Compile’s operator knows whose account it is. Your export
+shows it; other people on Compile, your profile and Compile’s web pages never do. It is updated when
+you next sign in with Google after it changes there, and is deleted with your account. Compile also
+uses the address, and any Instagram handle you gave, to recognise someone Compile’s operator invited
+from a list who joined another way. Google learns that you signed in to Compile, as Apple does.
+
+Your recovery code is kept in your iCloud Keychain, which Apple syncs to your devices, and deleting
+your account removes it.
+
+Anonymous counts (Improving Compile)
+
+Compile counts on your Mac how it is used, to learn where people get stuck and what to improve. Your
+pictures, their names, your boards and what you type or ask are no part of it.
+
+What a day’s report holds:
+- How often each of Compile’s own commands and steps was used (a board made, a search that found
+  nothing, an ask put back). Also which followed which.
+- How far a few tasks got (finding, asking, Grow, sharing, signing in), and how each ended.
+- How long a few things took, in coarse steps, and how many crashes and hangs macOS reported.
+- Where clicks land on each kind of window, in a coarse grid, with no time and nothing about what
+  was clicked.
+- How far boards are zoomed, and how many cards are in view.
+- What kinds of thing were placed (a photograph, a screenshot, a YouTube link), and from where
+  (Finder, search, a paste).
+- Which parts of Compile the day was spent in, and whether it was a brief, steady or long day.
+- With Share the kinds of things you collect on: broad subjects (an interior, lighting, a plan)
+  for what was placed, searched for and not found. They come from a fixed list of about 60, and are
+  worked out on your Mac. A search’s words are matched there and dropped, never kept or sent.
+- Three facts about the Mac’s use, and no others. Compile’s version (not the build). Whether this is
+  its first week, first month or later. Whether Compile was used on 8 or more of the last 28 days.
+
+Every word in a report comes from a list built into Compile, and Compile’s cloud refuses any report
+with a word outside it. Settings ▸ Privacy ▸ Improving Compile ▸ Show… shows today’s report and the
+last one sent, byte for byte as they go.
+
+Census answers. Apart from the day’s report, your Mac answers a few single facts. Each goes
+alone, with no counts and at its own random time, so none can be joined to a report or another
+answer. Each fact goes at most once a week, and the week and month answers once in each. The facts
+are:
+- the number of pictures in the library (in five broad steps), and of boards (in four)
+- whether the Mac’s language is English, whether it is signed in, and whether visual search is on
+- the macOS major version
+- that it was used this week, and this month
+
+How it leaves:
+- Unsent reports wait on your Mac for up to 14 days, then are deleted.
+- One report a day, each alone, at a random moment in the 24 hours after its day ends. Each is
+  unsigned, with no cookie, no account, nothing that names the Mac, and a browser name that is the
+  same for everyone.
+- Compile’s cloud sees your IP address, as with every request. It holds it in memory only, to allow
+  at most 24 reports a day from one network. It is never written down, and the request isn’t logged.
+- Reports wait in Compile’s cloud under random keys, with no time of arrival. Once a night they are
+  written in a shuffled order, under new random keys. They are kept 400 days. Cloudflare’s 30-day
+  restore points of the store where they wait can show when a report waited, but never where it came
+  from.
+
+Who reads them: no one reads a single report, only summaries. These leave out anything made from
+fewer than 5 Macs’ reports of the same day. Compile’s operator sees them in Compile. Claude
+(Anthropic) may read them to write Compile’s operator a short brief, and sees totals only.
+
+Your choices:
+- Share anonymous counts and Share the kinds of things you collect, in Settings ▸ Privacy ▸
+  Improving Compile, are on until you turn them off. Turning either off deletes at once what it
+  hasn’t sent.
+- You accept this policy, counts included, when you make your account. Without an account nothing is
+  sent: what is counted stays on your Mac and is deleted after 14 days.
+
+Reports can’t be exported or deleted on request, because nothing in them says whose they are.
+
+What Compile learns from what you do
+
+With an account, Compile also learns from what you do in it, linked to your account, to see what helps
+and what gets in the way, and to make Compile better for you and for everyone. It is on for every
+account until you turn it off.
+
+What it keeps:
+- Each time you use Compile on a Mac: when it began and ended, how many things you did, and Compile’s
+  version.
+- For each day: which of Compile’s own commands and steps you used, how many times, and the first and
+  last time. These are the same words as the anonymous counts above (a board made, a picture placed
+  from Finder, a search that found nothing, an ask put back), from the same list built into Compile.
+- None of it is your pictures, their names, your boards or anything you type or ask.
+
+Your Mac sends each of these once it ends, signed as your account’s other requests are. Unsent ones
+wait on your Mac for up to 14 days. Signing out deletes what waits.
+
+What it is joined with: the records about your account this policy already describes: when you
+joined, and through which invitation if Compile’s operator invited you; your plan and what you paid;
+what Compile’s Claude cost for you; what you did with the Feed’s suggestions; and what you wrote to
+Compile. From these Compile’s operator sees, for each account, its weeks in Compile, and what it earns
+and costs Compile.
+
+What you write to Compile: the words of Write to Compile…, the details of a report you send, a
+reply to an invitation, and notes Compile’s operator keeps from speaking with you. Compile’s cloud
+sends the words to Claude (Anthropic), twice and separately, to sort them into a fixed list of
+themes (such as “search finds the wrong thing”), each with the words that show it. Claude is sent
+the words, never your account. Compile’s operator sees the themes and the words, linked to your
+account.
+
+Who sees it: Compile’s operator, in Compile. The operator’s people lists and account pages show
+your username and account ID alongside the activity kept about your account, your plan and costs.
+The operator can open the same account page by username or account ID. Other customers cannot see
+these pages. Claude reads totals, the themes and these facts to write the operator a weekly brief,
+and is sent no account ID for that brief.
+
+How long: what you did, 400 days; the themes of what you wrote, a year. Then it is deleted. It
+is deleted with your account, and your account’s export includes it.
+
+Your choice: Share what I do, in Settings ▸ Privacy, is on until you turn it
+off. Turning it off is your objection to it: Compile stops at once, deletes what your Mac hasn’t sent,
+and deletes what its cloud kept of what you did. Turning it on again starts afresh. What you write
+to Compile is still read so Compile’s operator can answer it. Turning activity sharing off does not
+remove the billing, storage and operational usage records needed to run your account. The operator
+can still look up those records by username or account ID; the activity timeline is absent.
+
+The Feed’s suggestions
+
+Besides what people you follow make public, the Feed suggests public boards, public pictures and
+people you might like, from everyone’s public work. It suggests only what is public, and a person
+only if their own choices in Settings ▸ Privacy let you find them.
+
+What your Mac sends: when the Feed asks for suggestions, up to four short summaries of what your
+boards are about. Compile’s model makes them on your Mac, as numbers, not pictures, names or words.
+Compile’s cloud uses them to answer, and keeps none of them.
+
+What Compile’s cloud keeps, with your account:
+- What you did with each suggestion, and when: that you were shown it, opened it, placed from it or
+  made your own copy. Or that you asked for more like it, followed someone through it, or chose Not
+  Interested. Kept 180 days.
+- What the Feed showed you, and how it described each one to its ranking. Kept 14 days.
+- Your own ranker: numbers learned from what you did, which decide what the Feed suggests to you.
+  Kept until you delete your account.
+
+Nobody else sees these. What everyone does with suggestions helps choose them, without saying who
+did what. The Feed suggests what people who acted on the same things as you also acted on, and what
+the people you follow follow. It also suggests what people place together on public boards. Compile’s
+operator sees only totals: how many things were done, and how many rankers there are. Settings ▸
+Privacy ▸ Export My Data… includes all three, and deleting your account deletes them.
+
+Your choices: Not Interested takes a suggestion away, and blocking or muting someone takes them
+out of your suggestions at once. To object to suggestions being chosen for you, choose Write to
+Compile… in the Account menu.
+
+Cloudflare
+
+Cloudflare runs Compile’s cloud (the directory, the rooms, R2, Vectorize, Workers AI, the web pages), so every request
+passes through it, with your IP address. Compile turns off Cloudflare’s log of each request. Compile’s
+cloud does write its own messages, such as errors, to Cloudflare’s Workers Logs. They are written to
+name nobody, and Cloudflare keeps them for a few days, as its plan sets: 3 on Workers Free, 7 on
+Workers Paid. Cloudflare keeps restore points of the directory and the rooms for up to 30 days.
+
+Workers AI makes, from the text of PDFs on shared and public boards and from the words
+searched there, what finds passages by meaning. Cloudflare says it does not use that content
+to train AI models. For these inference requests, it keeps inputs and outputs only as needed
+to process and answer them, subject to its safety, security and legal exceptions. Compile
+keeps each board’s text and vectors in Cloudflare’s storage as described above; Cloudflare
+may also retain operational metadata for running, securing and billing the service.
+
+GitHub, for the directory’s backup
+
+Each night, a computer GitHub runs for Compile copies the directory and encrypts the copy to a key
+Compile’s operator keeps offline. GitHub keeps it for 90 days, so accounts can be put back if
+Cloudflare loses them. The unencrypted copy is on that computer for the run alone, and is deleted
+once encrypted.
+
+Where your data is handled
+
+Compile’s service providers handle your data in the United States and other countries outside the EU
+and the UK. Their laws may protect it less. Where the GDPR applies, Compile relies on safeguards such
+as the EU-US Data Privacy Framework or the European Commission’s standard contractual clauses. Write
+to Compile for a copy. These providers are:
+- Cloudflare, which runs Compile’s cloud, for everything sent to it
+- Anthropic, for what goes to Claude
+- Stripe, for payments
+- GitHub, for the directory’s backup and Compile’s website
+
+Signing in with Apple or Google, and your iCloud Keychain, are between you and them: Compile’s cloud
+sends them nothing about you.
+
+Asking for a code on Compile’s website
+
+If you ask for an invitation code on Compile’s website, Compile’s cloud keeps your email address and
+when you asked. It also keeps when Compile’s operator sent you a code. It is deleted 12 months after
+you asked, or 30 days after a code was sent, whichever comes first. Nothing else is kept but the
+counts that limit asks from one network, for 2 days. Compile relies on your request, and its
+legitimate interest in letting people in a few at a time. The website is hosted by GitHub Pages,
+which sees your IP address.
+
+People Compile invites
+
+Compile’s operator invites some people and organisations from public lists of people who collect
+pictures on Are.na. It writes to each by email, Instagram, Are.na or their website, with a code of
+their own. For each, Compile’s cloud keeps:
+- what the list says of them, such as a name, email address, Instagram handle and website
+- how they are tied to others on the lists, and scores such as how likely they are to use a Mac,
+  switch to Compile and spread it
+- what was sent and when, and when their code’s page was opened and whether on a Mac
+- once they join, which account their code made, the days that account was seen, and whether their
+  own codes brought anyone in
+
+A model learned from whom Compile wrote to, and who joined, scores how likely each is to join. It
+helps choose whom to write to next. For now, these records aren’t deleted on a schedule.
+
+Each night, Compile’s cloud compares accounts’ usernames, full names, Google emails and Instagram
+handles with these lists. This finds people from the lists who joined another way. For a close match
+of names, it sends Claude the account’s username and full name, with the person’s name, Are.na page
+and website. Compile’s operator confirms or rejects every match. Compile relies on its legitimate
+interest in knowing whether its invitations reach people. You
+can object with Write to Compile… in the Account menu.
+
+People whose details came from these lists, and not from themselves, are owed a notice of their own
+under Article 14 of the GDPR. It is due at the latest when Compile first writes to them.
+
+What other people on Compile see
+--------------------------------
+
+- On a board: its people see what is on it and who placed what. On a shared board they see your
+  cursor while you are there, and when you were last there. Settings ▸ Privacy ▸ Show me on boards
+  turns this off.
+- On a public board: anyone, on the web too, sees what is on it and the names of the people
+  whose work is on it. As a guest on a public board, you have no name there.
+- Your profile: what Settings ▸ Privacy lets each audience see. Someone you block can’t find
+  you, see your profile or follow you through Compile’s directory, and nothing of theirs reaches you.
+  A public board stays public.
+- A group: its search finds only the pictures its people placed on its boards. It finds them by
+  what Claude read in them, words written in them included, and by their captions there. Nothing
+  else of your library reaches a group, except from a Mac of yours on an earlier version of Compile.
+  Such a Mac shares its library as it was set until it is updated. Descriptions of library pictures
+  a group was given before stay in its history, for everyone in it, including people who join later.
+  Hide from Search keeps a picture out of a group’s search.
+- Visual search, on a shared board: if you turn Visual search off on any of your Macs, none of your
+  pictures is read, whichever Mac placed it. Each shared board you can change says so: its people
+  can see that, and when each of your Macs answered. A Mac on an earlier version of Compile says
+  nothing of its answer.
+- Pictures that leave: a picture that goes to anyone else is a copy. It leaves out where it was
+  taken, serial numbers, owner and computer names, people named in it and edit history.
+- Compile asks web search engines not to index its pages.
+
+After you delete your account
+-----------------------------
+
+The directory forgets you at once, except for:
+- your username, for a month, with nothing attached
+- other people’s blocks of you, which are theirs
+- reports you sent and reports about you, operators’ takedowns and suspensions, and the record of
+  what operators did, by your key’s fingerprint. For now, these moderation records aren’t deleted
+  automatically.
+- if you were suspended, a hash of your Apple or Google sign-in ID, until the suspension is lifted,
+  so it makes no new account
+- the Macs you removed, by your key, so they stay removed
+- if Compile’s operator invited you from a list: that you joined, the days your account was seen, and
+  whether your codes brought anyone in
+
+Your public boards nobody else is on, and your page, stop being public.
+Your boards, and your work on boards with others, stay on the Macs of the people on them and in
+their rooms. Restore points keep earlier states for up to 30 days, and the directory’s encrypted
+nightly copies for up to 90.
+
+Your choices and rights
+-----------------------
+
+- See and change: Settings ▸ Privacy for who sees what, and whom you block; Settings ▸ Account
+  for your username, name and picture.
+- Export: Settings ▸ Privacy ▸ Export My Data… gives what the directory keeps about your
+  account, but for what is listed below. It gives your profile, choices, follows and requests to
+  follow, blocks, and your Macs, with the Macs you removed. It gives your boards list, the rooms you
+  founded, letters waiting and reports you sent. It gives how you sign in, your Google email, how
+  many files you keep in Compile’s cloud and your plan. And it gives your
+  feedback, the Feed’s suggestions, what Compile learns from what you do with the themes of what you
+  wrote, and whether your sign-in ID is barred. It leaves out your
+  internal usage metrics and operating costs, and your invitation codes and when their pages were opened. It also leaves out any match to someone Compile’s operator invited, and reports
+  about you with what Compile’s operator did about them. To get those, choose Write to Compile… in the
+  Account menu. Your boards and library are already files on your Mac.
+- Delete: Settings ▸ Privacy ▸ Delete Account….
+- Withdraw consent: before your pictures first go to Claude, Compile asks you. You can withdraw
+  that at any time by turning Visual search off in Settings ▸ Library, which stops readings and library
+  passes too. Withdrawing doesn’t affect what was sent before.
+- Narrow what goes: leave a board, unfollow, block or mute someone, or use Hide from Search. You
+  can also turn off Visual search, Share anonymous counts, Share the kinds of things you collect, or
+  Share what I do.
+- Automated decisions: Compile makes no decision about you by automated means alone that has
+  legal or similarly significant effects on you. Three things are automated profiling. The Feed ranks
+  its suggestions for you by what you, and people who acted like you, did. If Compile’s operator
+  invited you from a list, a model scored how likely you were to join, to help choose whom to write
+  to. And what Compile learns from what you do is read with your account’s other records to see how
+  your weeks in Compile go. You can object to the first two with Write to Compile… in the Account menu,
+  and to the third with its switch.
+- Your rights: where the GDPR or a law like it applies, you have the right to see your personal
+  data and correct it. You also have the right to delete it, limit how it is used, and get a
+  portable copy of it. Ask with Write to Compile… in the Account menu. You can also complain to the
+  data protection authority where you live or work, or where you think the law was broken. The app’s
+  export and delete controls don’t limit those rights.
+- Your right to object: you can object at any time to any use that rests on Compile’s legitimate
+  interests. These include the Feed’s suggestions, the anonymous counts, what Compile learns from
+  what you do, and matching your account to people Compile invited. Compile then stops, unless it has
+  compelling legitimate grounds that override your interests, rights and freedoms, or needs the data
+  for a legal claim. For the anonymous counts, and for what Compile learns from what you do, turning
+  their switches off is enough.
+
+Compile uses account, board and billing data to provide what you ask for. It uses limits, reports and
+security records to protect the service and its people, and keeps records where the law requires.
+Where the GDPR applies, its legal grounds are:
+- the agreement with you, for the service you ask for: your account, boards and billing
+- your consent, for Visual search, readings and library passes
+- its legitimate interest in security and preventing abuse: limits, reports, moderation records,
+  barred sign-in IDs and removed Macs
+- its legitimate interest in knowing whose account is whose, and whether its invitations reach
+  people (your Google email and any Instagram handle)
+- its legitimate interest in learning how Compile is used, so it can be improved: the anonymous
+  counts, where they are personal data at all, and the counts of how well picture search works
+- its legitimate interest in letting people in by invitation: invitation codes, and when their pages
+  are opened
+- its legitimate interest in choosing what the Feed suggests to you
+- its legitimate interest in understanding how each account uses Compile, what it costs and earns, and
+  what people write to it, so Compile can be fixed, improved and run as a business: what Compile learns
+  from what you do, and the themes of what you write. Compile has weighed this interest against yours
+  in a written assessment, which you can ask for with Write to Compile…
+- its legal duties
+
+These grounds don’t override your rights.
+
+Children
+--------
+
+Compile is for people 16 and older. You confirm you are when you sign up; Compile doesn’t ask your
+birth date. If you think someone younger has an account, report them in Compile or on their public
+profile, or use Write to Compile… while signed in. Compile’s operator reviews those reports.
+
+Changes
+-------
+
+Changes appear on this page with a new version date. Where the law requires notice or consent for a
+change, that requirement applies.
+
+
+Compile Terms of Use
+====================
+
+Version dated 24 October 2026.
+
+1. These terms
+--------------
+
+These terms are an agreement between you and the operator of Compile, called
+“Compile” in these terms. They cover the Mac app, Compile’s cloud and Compile’s web pages. The
+Privacy Policy says what Compile collects and keeps.
+
+You accept these terms when you make an account.
+
+2. The beta
+-----------
+
+Compile is in a small beta, by invitation. During the beta:
+- Billing is on. A payment is real unless Stripe marks the checkout as a test or sandbox. Check the
+  price and payment details before you pay.
+- A new Free account can try advanced search and board assistance for its first 14 days.
+  Plus unlocks ongoing access. Optional credits can pay for advanced search on Free; they do not
+  unlock other Plus features.
+- Features change, and some may stop working or go away.
+- AI features have limits and may be temporarily unavailable. Compile will tell you when to try again.
+
+Plus and credits can be bought while billing is on. If billing is off, nothing can be bought and the
+beta plan Compile sets applies. A beta offer made to you earlier lasts as long as it promised; these
+terms don’t shorten it.
+
+Your boards live on your Macs. A board kept Only on this Mac is never kept in Compile’s cloud, so
+Compile can’t give it back if your Mac is lost. Keep your own backups.
+
+3. Who can use Compile
+----------------------
+
+- You must be 16 or older, and meet any higher age or permission requirement of your local law.
+- One account per person, made by signing in with Apple or Google. What is done from your Macs is
+  done as you: remove a lost Mac in Settings ▸ Macs, and keep your recovery code safe.
+- You may not make an account to get around a suspension, or use Compile where the law forbids it.
+
+4. Your work
+------------
+
+It stays yours. Placing something on a board gives Compile no ownership of it.
+
+What you let Compile do with it. For what you place on a board other people can open, and what
+you send to Claude, you give Compile a worldwide, non-exclusive, royalty-free licence to store,
+copy, carry and show it. The licence also covers changing its form: making smaller versions,
+converting it, leaving out where it was taken and other details, and working out its hashes and
+what it shows. Compile may do this only to run Compile:
+- on a private board or a group’s, to carry it to the board’s people
+- on a public board, to show it to anyone, in Compile and on the web, and to list it in Compile’s
+  search. The board’s people can turn listing off.
+- for what you send to Claude (visual search, asking in ⌘K), to pass it to Claude and bring back the
+  answer
+
+Compile may have the service providers the Privacy Policy names do this for it, for these purposes
+only.
+
+When a board stops being public or listed, or is taken down or thrown away, Compile asks search to
+remove it. It retries every minute until search confirms. While search can’t be reached, the board
+may still be found there. Copies other people already made are not recalled.
+
+The licence ends when the material is no longer shared through Compile. It lasts longer only as
+needed to finish removing and deleting it, to keep the copies the Privacy Policy describes, or to
+obey the law. Copies other people made can stay on their boards. Restore points in Compile’s cloud
+can keep earlier states for up to 30 days.
+
+What others on Compile may do. On a public board, others can look at what you placed, find it,
+and place it on their own boards in Compile. There it keeps its history, and names the board it came
+from. This gives nobody a right to use your work outside Compile, and doesn’t override other people’s
+rights.
+
+What you may place. Only what you have the right to place there. A public board publishes
+everything on it. Keeping a picture for private reference doesn’t by itself let you publish it.
+
+What Claude writes for you (descriptions, answers) is yours to use, as far as Compile can give
+it. It can be wrong, incomplete or out of date: check it before you rely on it. Compile doesn’t
+promise that an answer is unique or free of other people’s rights.
+
+5. What you may not do
+----------------------
+
+On Compile you may not:
+- place or send anything illegal, including the sexual exploitation of children
+- harass, threaten or spread hate
+- use someone else’s work without permission or another lawful basis
+- publish private information about others, or intimate pictures of anyone without their consent
+- spam, scam or phish, or spread malware
+- pretend to be someone else, or falsify where a picture came from or who found it
+- get around limits, blocks or suspensions, or make accounts in bulk
+- drive Compile with software other than Compile
+- attack or overload Compile’s cloud, or try to reach what you have no access to
+- use Claude in ways Anthropic’s Usage Policy (https://www.anthropic.com/legal/aup) or supported
+  regions policy (https://www.anthropic.com/supported-countries) forbid. Those policies apply to you
+  when you use Claude in Compile.
+
+Found a security problem? Sign in and send Compile’s operator a private note with Write to Compile… in
+the Account menu. Don’t include anyone else’s private data, or exploit the problem to get at it.
+
+6. Reports, takedown and suspension
+-----------------------------------
+
+Reporting. In Compile, use Report… on a person in a board’s People menu or on their profile.
+Report… is also on a letter, a Feed item or a notification they sent. On the web, report a public
+board or a person with Report on its page. Nobody reported is told who reported them.
+
+What Compile’s operator can do. Compile’s operator reviews reports, and can:
+- take down a public board: its web page and picture go offline, and its room lets in only the
+  people on it. The board stays on its people’s Macs.
+- suspend an account: nobody else can find it, see its profile or page, or follow it. It can
+  send no letters or reports, and the public boards its person founded come down. Its person can
+  still open the account, export its data and delete it.
+
+A private board is sealed from its first share, and its room holds no key to the sealed part. What
+it held before its first share is not sealed, and Compile’s cloud can read that part. Compile’s
+operator acts on what is public, and on the people behind it. While signed in, you can ask about an
+action it took with Write to Compile… in the Account menu.
+
+Copyright concerns. Use Report on the public board or profile, or Write to Compile… while signed
+in. Say what the work is, where it appears in Compile, and why you believe it infringes your rights.
+
+7. Plans and billing
+--------------------
+
+- Plus is $10 a month, paid through Stripe, which keeps your card. Compile never sees its full
+  number; it reads the card’s brand, last four digits and expiry from Stripe, to show them in
+  Settings ▸ Billing. A paid subscription renews monthly until cancelled. Free includes 5 GB of
+  cloud storage; Plus includes 25 GB.
+- Credits are optional purchases for advanced search and eligible AI features beyond what
+  your plan includes. You can turn them off and set a monthly spending limit. They do not unlock
+  Plus-only features or extend access to board questions. Plus features unlock immediately when
+  you upgrade. AI features have limits and may be temporarily unavailable.
+- Cancel any time in Settings ▸ Billing: Plus runs to the end of the period paid for.
+- Existing boards and search information remain usable after cancellation, including local editing
+  and export. New cloud uploads must fit within Free’s storage allowance. Exceeding that
+  allowance does not delete files already stored.
+- Check the amount at checkout, including any taxes shown there. Any refund, withdrawal or other
+  consumer right the law gives you still applies. For a billing question, use Write to Compile… while
+  signed in.
+
+8. Ending
+---------
+
+You can delete your account at any time in Settings ▸ Privacy ▸ Delete Account…. Deleting your
+account ends Plus at once. The time left in the period you paid for isn’t refunded, except where the
+law gives you a refund. Compile’s directory then deletes your account at once, except what the
+Privacy Policy says it keeps, and nobody else can take your username for a month. Your public boards
+nobody else is on, and your page, stop being public. Your boards stay on your Macs and the Macs of
+the people on them.
+
+Compile can suspend an account that breaks these terms, or when the law requires. The beta or the
+service may end; your boards stay on your Macs. The law’s requirements for notice, refunds and other
+remedies still apply.
+
+Permissions for copies already made, and any rights or duties that by their nature continue, stay
+after an account ends.
+
+9. Availability and your rights
+-------------------------------
+
+Compile is offered as it is during the beta. Features may be unavailable, and answers wrong. Nothing
+in these terms excludes a right, warranty or remedy, or limits liability, where the law forbids it.
+
+10. Changes
+-----------
+
+Updated terms will appear on this page with a new version date. Where the law requires notice or
+agreement before a change takes effect, that requirement applies. Posting an update doesn’t remove
+rights or promises that already apply to you.
+
+11. Contact
+-----------
+
+For questions about these terms, privacy, billing or security, sign in to Compile and choose Write
+to Compile… in the Account menu. Your note goes to Compile’s operator with your account, and
+Compile’s and macOS’s versions. For a public board or profile, its web page also has Report.

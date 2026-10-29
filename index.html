@@ -4,35 +4,54 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Ground</title>
-<meta name="theme-color" content="#FCFCFB">
-<meta name="color-scheme" content="light">
+<title>Compile</title>
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#08090A" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<script>
+/* Before the page is drawn: Light or Dark as the moon last chose, and whether this is one of Apple's own
+   systems, whose font draws SF Symbols (Site/public/assets/gate.css `.sym`). */
+(function () {
+  var root = document.documentElement;
+  try { var chosen = localStorage.getItem('appearance'); if (chosen === 'dark' || chosen === 'light') root.setAttribute('data-theme', chosen); } catch (e) {}
+  if (/Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || /Macintosh|iPhone|iPad/.test(navigator.userAgent || '')) root.classList.add('apple');
+})();
+</script>
 <meta name="referrer" content="no-referrer">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/gate.css">
-<script>try { if (sessionStorage.getItem('ground.key')) document.documentElement.className = 'opening'; } catch (e) {}</script>
-<script id="vault" type="application/json">{"v":1,"page":"index.html","manifest":"vault/114acfdcc73c30e7.bin","salt":"Dn+GaiXgDRQVJuhLzAlWlw==","iterations":600000}</script>
 </head>
 <body>
-<main class="gate">
+<button class="theme" id="theme" type="button" aria-label="Dark appearance" aria-pressed="false"><span class="sym" aria-hidden="true"></span><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><path d="M11.66 7A7.08 7.08 0 1 0 20.82 16.49A7.06 7.06 0 0 1 11.66 7Z"/></svg></button>
+<main class="gate" data-cloud="https://ground-cloud.ml2873.workers.dev">
   <div class="col">
-    <img class="icon" src="assets/icon-512.png" alt="" width="40" height="40">
-    <h1 class="title">Ground is invite-only for now</h1>
-    <p class="line">Enter the code someone gave you.</p>
-    <form class="card" id="gate" novalidate>
-      <input class="field" id="code" type="text" placeholder="XXXX-XXXX-XXXX" aria-label="Invitation code"
-             autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" enterkeyhint="go">
-      <button class="btn btn-primary" id="go" type="submit" disabled>Continue</button>
+    <span class="icon" aria-hidden="true"><img class="day" src="assets/icon-512.png" alt="" width="100" height="100"><img class="night" src="assets/icon-512-dark.png" alt="" width="100" height="100"></span>
+    <h1 class="title"><span class="name">Compile<span class="badge"><span>Research preview</span></span></span></h1>
+    <form class="card" id="ask" novalidate>
+      <div class="row">
+        <input class="field" id="email" type="email" placeholder="Join the waitlist with your email" aria-label="Your email address, to join the waitlist" autocomplete="email" spellcheck="false">
+        <button class="go" id="send" type="submit" disabled aria-label="Join the waitlist"><span class="sym" aria-hidden="true"></span><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="9.18"/><path class="arrow" d="M9.83 14H18.28M15.02 10.75L18.28 14L15.02 17.25"/><path class="tick" d="M10.17 14.57L12.65 17.94L17.75 10.5"/></svg></button>
+      </div>
+      <p class="problem" id="asked" role="status" aria-live="polite"></p>
+    </form>
+    <form class="card" id="enter" novalidate hidden>
+      <div class="cells" id="cells">
+        <input id="code" type="text" aria-label="Your invitation code: twelve letters and digits" autocomplete="off" autocorrect="off"
+               autocapitalize="characters" spellcheck="false" enterkeyhint="go">
+        <div class="boxes" aria-hidden="true"><span class="group"><span class="box" style="--i:0"></span><span class="box" style="--i:1"></span><span class="box" style="--i:2"></span><span class="box" style="--i:3"></span></span><span class="group"><span class="box" style="--i:4"></span><span class="box" style="--i:5"></span><span class="box" style="--i:6"></span><span class="box" style="--i:7"></span></span><span class="group"><span class="box" style="--i:8"></span><span class="box" style="--i:9"></span><span class="box" style="--i:10"></span><span class="box" style="--i:11"></span></span></div>
+      </div>
       <p class="problem" id="problem" role="status" aria-live="polite"></p>
     </form>
-    <div class="app">
-      <a href="https://github.com/office-levy/ground-site/releases/latest/download/Ground.dmg">Download for Mac</a>
-      <p>Version 1.1 (1638) · 233 MB · macOS 26 or later</p>
+    <div class="get" id="get" hidden>
+      <a class="download" id="download" href="#"><span class="mark" aria-hidden="true">&#xF8FF;</span>Download for Mac</a>
+      <p class="version"><span class="release">Version 1.3 (3509) · 213 MB</span><span>Requires <span class="system">macOS 26 or later</span> and a Mac with Apple silicon</span></p>
     </div>
-    <noscript><p class="problem">This page needs JavaScript to open.</p></noscript>
+    <p class="switch" id="switch-line"><span id="switch-words">Have an invitation code? </span><button type="button" class="link" id="switch" aria-controls="enter">Enter it</button></p>
+    <noscript><p class="problem">This page needs JavaScript.</p></noscript>
   </div>
 </main>
+<footer class="foot"><span>© 2026 L LLC</span><a href="privacy-and-terms.txt" download="Compile Privacy and Terms.txt">Privacy and Terms</a></footer>
 <script src="assets/gate.js"></script>
 </body>
 </html>
