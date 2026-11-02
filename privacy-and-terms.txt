@@ -81,6 +81,7 @@ What it gets:
 - Your username, and the private ID Apple or Google gives Compile (your name isn’t asked for).
 - If you sign in with Google, the email address it has verified for you, which other people on
   Compile never see. Apple isn’t asked for an email.
+- If you sign in with email, that address, which other people on Compile never see.
 - Your public key and its fingerprint, which tell other Macs who you are.
 - If you give them, your full name and profile picture, and an Instagram handle (only an earlier
   version of Compile asked for one).
@@ -327,6 +328,12 @@ you next sign in with Google after it changes there, and is deleted with your ac
 uses the address, and any Instagram handle you gave, to recognise someone Compile’s operator invited
 from a list who joined another way. Google learns that you signed in to Compile, as Apple does.
 
+If you sign in with email instead, Compile’s cloud emails a 6-digit code to the address you type,
+through Resend. The code works for 10 minutes, on the Mac that asked for it, and is kept only as a
+one-way hash until it is used or runs out. The address is kept on your account as how you sign in:
+your export shows it, other people on Compile never see it, and it is deleted with your account.
+Renaming your account, deleting it or removing a Mac sends a new code to that address first.
+
 Your recovery code is kept in your iCloud Keychain, which Apple syncs to your devices, and deleting
 your account removes it.
 
@@ -495,6 +502,7 @@ to Compile for a copy. These providers are:
 - Cloudflare, which runs Compile’s cloud, for everything sent to it
 - Anthropic, for what goes to Claude
 - Stripe, for payments
+- Resend, for the sign-in codes Compile emails, if you sign in with email
 - GitHub, for the directory’s backup and Compile’s website
 
 Signing in with Apple or Google, and your iCloud Keychain, are between you and them: Compile’s cloud
@@ -659,7 +667,7 @@ change, that requirement applies.
 Compile Terms of Use
 ====================
 
-Version dated 24 October 2026.
+Version dated 2 November 2026.
 
 1. These terms
 --------------
@@ -821,14 +829,38 @@ after an account ends.
 Compile is offered as it is during the beta. Features may be unavailable, and answers wrong. Nothing
 in these terms excludes a right, warranty or remedy, or limits liability, where the law forbids it.
 
-10. Changes
+10. Section 230 and parental controls
+-------------------------------------
+
+What others place is theirs. What people place on Compile, send in it or write there is the
+responsibility of the person who provided it. Compile doesn’t review it before it appears, and
+doesn’t adopt or endorse it by carrying, showing or listing it.
+
+Section 230. Compile is a provider of an interactive computer service under Section 230 of the
+Communications Decency Act of 1996 (47 U.S.C. § 230). Under that law, Compile is not treated as the
+publisher or speaker of information another person provides. Nor is it liable for acting in good
+faith to remove or restrict material it considers objectionable, or for giving people the means to
+do so, such as Report…, Block… and Mute. Reviewing a report, taking material down or leaving it up
+doesn’t make Compile its author. Section 230 doesn’t limit intellectual property law, federal
+criminal law or the other law it leaves in place, and section 6 still applies to copyright
+concerns. Outside the United States, your local law decides what Compile is responsible for.
+Nothing here limits liability where the law forbids it (section 9).
+
+Parental controls. As Section 230(d) requires, Compile tells you that parental control
+protections (such as computer hardware, software or filtering services) are commercially available
+that may help limit access to material that is harmful to minors. Apple’s Screen Time, built into
+macOS, is one: see Apple’s child safety page (https://www.apple.com/child-safety/). The U.S.
+Federal Trade Commission describes others at
+consumer.ftc.gov (https://consumer.ftc.gov/articles/parental-controls).
+
+11. Changes
 -----------
 
 Updated terms will appear on this page with a new version date. Where the law requires notice or
 agreement before a change takes effect, that requirement applies. Posting an update doesn’t remove
 rights or promises that already apply to you.
 
-11. Contact
+12. Contact
 -----------
 
 For questions about these terms, privacy, billing or security, sign in to Compile and choose Write
