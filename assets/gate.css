@@ -117,7 +117,7 @@ p, h1 { margin: 0; }
 .col > .about { animation-delay: 150ms; }
 .col > .card { animation-delay: 220ms; }
 .col > .switch { animation-delay: 280ms; }
-.foot { animation: arrive var(--slow) var(--ease-out) 340ms both; }
+.foot, .more { animation: arrive var(--slow) var(--ease-out) 340ms both; }
 .title .badge { animation: land var(--settle) var(--ease-out) 460ms both; }
 
 /* Compile's icon, as it sits in the Dock: its own rounded shape, with the faintest shadow under it (the
@@ -335,6 +335,25 @@ p, h1 { margin: 0; }
    29 October 2026: “the apple symbols aren't showing”), so each is a drawing of the symbol at its measured
    size, line and place in its button, the same everywhere. */
 
+/* What Compile does, and what it asks Google for, on overview/, the page Google is given as Compile's home
+   page and nothing on the site links to: a reading column as wide as the door's field, the quiet grey, its
+   two headings in ink (the pre-flight audit, 4 November 2026). The door's icon, name and line sit above it,
+   nearer the top, as the page is for reading. */
+.overview-page .gate { flex: none; padding-top: max(48px, 12svh); padding-bottom: 36px; }
+.more {
+  width: 100%; max-width: 440px; box-sizing: border-box; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-right, 0px)) 72px max(24px, env(safe-area-inset-left, 0px));
+  font-size: 14px; line-height: 22px; color: var(--quiet); text-align: left;
+}
+.more h2 { margin: 28px 0 8px; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--ink); }
+.more h2:first-child { margin-top: 0; }
+.more ul { margin: 0; padding-left: 18px; }
+.more li { margin: 4px 0; }
+.more p { margin: 0; text-wrap: pretty; }
+.more a { color: var(--link); text-decoration: none; border-radius: 4px; transition: color var(--fast) linear; }
+.more a:hover { color: var(--ink); }
+.more a:focus { outline: none; }
+.more a:focus-visible { box-shadow: 0 0 0 2px var(--ground), 0 0 0 4px var(--edge-strong); }
+
 /* The page's footer, small and faint (the owner, 29 October 2026: “should be smaller. lighter in light mode and
    darker on dark mode. on the bottom also put small © 2026 L LLC”; then “too small now. should be a tad bit
    larger”, so 12): the copyright, then Privacy and Terms, the site's own page of them. */
@@ -359,7 +378,7 @@ p, h1 { margin: 0; }
 @keyframes shake { 20% { transform: translateX(-3px); } 45% { transform: translateX(2px); } 70% { transform: translateX(-1px); } }
 @keyframes blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .col > *, .col > .icon, .title .badge, .foot, .card.shown, .card.done .problem { animation: none; }
+  .col > *, .col > .icon, .title .badge, .foot, .more, .card.shown, .card.done .problem { animation: none; }
   .icon, .icon:hover, .icon img { transition: none; transform: none; }
   .card.sending .go, .go:active:not(:disabled) { animation: none; transform: none; }
   .col > .leaving, .col > .stepping, .get.shown, .get.shown .version, .problem.shown { animation: none; }
