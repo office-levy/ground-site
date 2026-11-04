@@ -114,6 +114,7 @@ p, h1 { margin: 0; }
 .col > * { animation: arrive var(--slow) var(--ease-out) both; }
 .col > .icon { animation: settle 600ms var(--overshoot) backwards; }
 .col > .title { animation-delay: 90ms; }
+.col > .about { animation-delay: 150ms; }
 .col > .card { animation-delay: 220ms; }
 .col > .switch { animation-delay: 280ms; }
 .foot { animation: arrive var(--slow) var(--ease-out) 340ms both; }
@@ -160,6 +161,11 @@ p, h1 { margin: 0; }
      box itself in the middle of the name's line, as the row centres it. */
   text-box: trim-both cap alphabetic;
 }
+
+/* What Compile is, under the name in the quiet grey, as the line under the field is: Google's branding check
+   asks the home page to say what the app is for (the pre-flight audit, 4 November 2026). */
+.about { margin: 10px 0 0; max-width: 380px; font-size: 14px; line-height: 20px; color: var(--quiet); text-wrap: balance; }
+.about span { display: block; }
 
 .card { margin-top: 28px; width: 100%; display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
 /* The field, and in it at the right SF Symbols' arrow.right.circle, light (the owner, 29 October 2026: the tick
@@ -331,7 +337,7 @@ p, h1 { margin: 0; }
 
 /* The page's footer, small and faint (the owner, 29 October 2026: “should be smaller. lighter in light mode and
    darker on dark mode. on the bottom also put small © 2026 L LLC”; then “too small now. should be a tad bit
-   larger”, so 12): the copyright, and the policy and the terms as one text file. */
+   larger”, so 12): the copyright, then Privacy and Terms, the site's own page of them. */
 .foot {
   padding: 0 max(24px, env(safe-area-inset-right, 0px)) max(22px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
   display: flex; justify-content: center; gap: 16px;
