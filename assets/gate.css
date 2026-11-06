@@ -1,8 +1,10 @@
-/* The gate: the site's door, in Compile's tokens (docs/spec/visual-system.md, Palette.swift), in Light or
-   Dark as the reader's system is, or as the moon at the top right chooses (the owner, 29 October 2026: “there
-   shoudl be a dark mode”). SF Pro, as the system's font, and drawings of SF Symbols (the owner: “make sure its all
+/* The gate: the site's door, in Compile's tokens (docs/spec/visual-system.md, Palette.swift), in Dark until the
+   moon at the top right chooses Light (the owner, 29 October 2026: “there shoudl be a dark mode”; 4 November 2026:
+   “default dark mode in app and on website”), whatever the reader's system is, as Compile is until Settings ▸
+   Appearance chooses. SF Pro, as the system's font, and drawings of SF Symbols (the owner: “make sure its all
    apple sf symbols and font”). One column: Compile's icon, its name with "Research preview" beside it, and the
-   waitlist; the code's cells take the waitlist's place, and the download theirs. Focus is quiet and
+   waitlist; the code's cells take the waitlist's place, and the code in its box, the download and Open in
+   Compile theirs, as the cloud's code page draws them (Cloud/src/web.ts `DOOR_STYLE`). Focus is quiet and
    neutral here, a ring of tint, with no blue.
 
    Every line is a border, 0.5px, never a shadow (the owner, 29 October 2026, of the badge's edge on a phone:
@@ -10,23 +12,26 @@
    pixel on a Retina screen, where a half-pixel shadow falls between them and smears over two. Site/build.mjs
    refuses a stylesheet with an inset shadow. */
 
+/* Dark, as Compile's own (Palette.swift): Linear's page, #08090A, its text #F7F8F8, X's greys for the quieter
+   words, the tints white; the field a step above the page, as the app's message field is. The page's look until
+   the moon chooses Light, and without the script that reads its choice (Site/build.mjs `look`). */
 :root {
-  --ground: #FFFFFF;           /* white (the owner, 29 October 2026: “make the background straight up white in light mode”) */
-  --ink: #0B0B0B;
-  --secondary: #52514E;
-  --quiet: #8E8C87;            /* the grey words, lighter than the app's (the owner, 29 October 2026: “the gray text should be lighter in light mode and darker in dark mode”) */
-  --name: #0B0B0B;             /* Compile's name: ink in Light (“compile should be darker in light mode”) */
-  --link: #52514E;             /* “Enter it”: a step softer than the name, in Light as in Dark (the owner, 29 October 2026: “the gray used in 'compile' should be the color for 'enter it' and the color 'enter it' is should take what compile is”) */
-  --badge-fill: rgba(var(--tints), .022);
-  --hint: #A9A7A2;             /* the field's placeholder, lighter than the grey words (the owner, 29 October 2026: “the gray should be lighter gray”) */
-  --faint: #AEACA7;            /* the footer's words, fainter than the grey words (the owner, 29 October 2026) */
-  --tints: 11, 11, 11;         /* the tints are the text colour at an opacity: #0B0B0B in Light */
+  --ground: #08090A;
+  --ink: #F7F8F8;
+  --secondary: #CECECE;
+  --quiet: #8C8C8C;
+  --name: #F7F8F8;
+  --link: #CECECE;
+  --badge-fill: rgba(var(--tints), .05);
+  --hint: #767676;
+  --faint: #6B6B6B;
+  --tints: 255, 255, 255;      /* the tints are the text colour at an opacity: white in Dark */
   --edge: rgba(var(--tints), .10);
   --edge-strong: rgba(var(--tints), .20);
   --tint: rgba(var(--tints), .05);
-  --tint-hover: rgba(var(--tints), .10);
-  --field: #FCFCFC;            /* the text box the lightest grey on the white page (the owner, 29 October 2026: “a lot lighter gray”, then lighter still) */
-  --shadow: rgba(11, 11, 11, .045);
+  --tint-hover: rgba(var(--tints), .075);
+  --field: rgba(255, 255, 255, .018);   /* a step above the page, less than it was (the owner, 29 October 2026: “make the text box a bit darker than it was before”) */
+  --shadow: rgba(0, 0, 0, .35);
   --accent: #2A78D6;
   --focus-glow: #CDE2FB;
   --r-card: 10px;
@@ -39,45 +44,24 @@
   --regular: 400;
   --medium: 500;
   --font: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro", "SF Pro Text", sans-serif;
-  color-scheme: light dark;
-}
-/* Dark, as Compile's own (Palette.swift): Linear's page, #08090A, its text #F7F8F8, X's greys for the
-   quieter words, the tints white; the field a step above the page, as the app's message field is. As the
-   reader's system is, unless the moon chose (`data-theme`, kept in the browser). */
-:root[data-theme="dark"] {
-  --ground: #08090A;
-  --ink: #F7F8F8;
-  --secondary: #CECECE;
-  --quiet: #8C8C8C;
-  --name: #F7F8F8;
-  --link: #CECECE;
-  --badge-fill: rgba(var(--tints), .05);
-  --hint: #767676;
-  --faint: #6B6B6B;
-  --tints: 255, 255, 255;
-  --tint-hover: rgba(var(--tints), .075);
-  --field: rgba(255, 255, 255, .018);   /* a step above the page, less than it was (the owner, 29 October 2026: “make the text box a bit darker than it was before”) */
-  --shadow: rgba(0, 0, 0, .35);
   color-scheme: dark;
 }
-:root[data-theme="light"] { color-scheme: light; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ground: #08090A;
-    --ink: #F7F8F8;
-    --secondary: #CECECE;
-    --quiet: #8C8C8C;
-    --name: #F7F8F8;
-    --link: #CECECE;
-    --badge-fill: rgba(var(--tints), .05);
-    --hint: #767676;
-  --faint: #6B6B6B;
-    --tints: 255, 255, 255;
-    --tint-hover: rgba(var(--tints), .075);
-    --field: rgba(255, 255, 255, .018);
-    --shadow: rgba(0, 0, 0, .35);
-    color-scheme: dark;
-  }
+/* Light, once the moon chooses it (`data-theme`, kept in the browser). */
+:root[data-theme="light"] {
+  --ground: #FFFFFF;           /* white (the owner, 29 October 2026: “make the background straight up white in light mode”) */
+  --ink: #0B0B0B;
+  --secondary: #52514E;
+  --quiet: #8E8C87;            /* the grey words, lighter than the app's (the owner, 29 October 2026: “the gray text should be lighter in light mode and darker in dark mode”) */
+  --name: #0B0B0B;             /* Compile's name: ink in Light (“compile should be darker in light mode”) */
+  --link: #52514E;             /* “Enter it”: a step softer than the name, in Light as in Dark (the owner, 29 October 2026: “the gray used in 'compile' should be the color for 'enter it' and the color 'enter it' is should take what compile is”) */
+  --badge-fill: rgba(var(--tints), .022);
+  --hint: #A9A7A2;             /* the field's placeholder, lighter than the grey words (the owner, 29 October 2026: “the gray should be lighter gray”) */
+  --faint: #AEACA7;            /* the footer's words, fainter than the grey words (the owner, 29 October 2026) */
+  --tints: 11, 11, 11;         /* #0B0B0B in Light */
+  --tint-hover: rgba(var(--tints), .10);
+  --field: #FCFCFC;            /* the text box the lightest grey on the white page (the owner, 29 October 2026: “a lot lighter gray”, then lighter still) */
+  --shadow: rgba(11, 11, 11, .045);
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -134,13 +118,11 @@ p, h1 { margin: 0; }
   filter: drop-shadow(0 1px 2px var(--shadow));
 }
 .icon img { display: block; width: 100px; height: 100px; transition: opacity var(--base) var(--ease-out); }
-.icon .night { position: absolute; inset: 0; opacity: 0; }
-:root[data-theme="dark"] .icon .night { opacity: 1; }
-:root[data-theme="dark"] .icon .day { opacity: 0; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .icon .night { opacity: 1; }
-  :root:not([data-theme="light"]) .icon .day { opacity: 0; }
-}
+/* The dark icon in Dark, the page's look until the moon chooses Light; the light icon in Light. */
+.icon .night { position: absolute; inset: 0; }
+.icon .day { opacity: 0; }
+:root[data-theme="light"] .icon .night { opacity: 0; }
+:root[data-theme="light"] .icon .day { opacity: 1; }
 .title {
   margin-top: 32px; display: flex; justify-content: center;
   font-size: 17px; line-height: 27px; font-weight: var(--regular); letter-spacing: 0; color: var(--name);
@@ -269,20 +251,54 @@ p, h1 { margin: 0; }
 .card.done .problem { color: var(--secondary); }
 
 /* The way between the two forms: the one going steps back, a little up and small, and the words under it
-   fade as they change; the other arrives. The download's way in is the same step back, slower. */
+   fade as they change; the other arrives. The code's way out is the same step back, slower. */
 .col > .stepping { animation: leave 160ms var(--ease-out) forwards; pointer-events: none; }
 .col > .leaving { animation: leave 240ms var(--ease-out) forwards; pointer-events: none; }
 
-/* The download, once a code was one: it rises into the form's place, a little low and small, with give,
-   and what it needs settles under it a beat later. As wide as its words, as the text box is (the owner, 29
-   October 2026: consistent with the waitlist's conventions): its faint fill, hairline and corners of 10, its
-   words light grey (28 October: “option 2 … if you could make the text light gray”), ink under the pointer,
-   the edge darker with the text box's ring on focus; the Apple logo before them on Apple's systems. */
+/* Once a code was one, as the cloud's code page ends (Cloud/src/web.ts `codeInvitation`): the code in its box,
+   in the form's place, and the download under it rise together, a little low and small, with give, and the
+   lines under them settle a beat later. */
+.got { margin-top: 28px; width: 100%; display: flex; flex-direction: column; align-items: center; }  /* where the form was */
+.got[hidden], .steps[hidden] { display: none; }
+.got.shown { animation: rise 480ms var(--overshoot) both; }
+.got.shown .version, .got.shown .then { animation: arrive var(--slow) var(--ease-out) 200ms both; }
+.steps { display: flex; flex-direction: column; align-items: center; }
+
+/* The code, kept: one box as the text box is, as wide as the code, its letters spaced a little, in fours; a
+   click copies it, and SF Symbols' doc.on.doc at its right turns to a checkmark a moment (drawn). */
+.kept { display: flex; justify-content: center; }
+.code {
+  -webkit-appearance: none; appearance: none; margin: 0; position: relative;
+  display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 0 60px;
+  font: inherit; font-size: 17px; line-height: 22px; letter-spacing: .08em; color: var(--ink); text-align: center;
+  -webkit-user-select: none; user-select: none; cursor: pointer;
+  background: var(--field); border: 0.5px solid rgba(var(--tints), .13); border-radius: 10px;
+  transition: border-color var(--fast) linear, box-shadow var(--base) var(--ease-out);
+}
+.code:hover { border-color: rgba(var(--tints), .22); }
+.code:focus { outline: none; }
+.code:focus-visible { border-color: rgba(var(--tints), .2); box-shadow: 0 0 0 3px rgba(var(--tints), .03); }
+.code .symbol {
+  position: absolute; right: 14px; top: 50%; width: 28px; height: 28px; margin-top: -14px;
+  display: grid; place-items: center; color: var(--hint); transition: color var(--fast) linear;
+}
+.code:hover .symbol, .code.copied .symbol { color: var(--ink); }
+.code .drawn { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; }
+.code .tick { display: none; stroke-width: 1.45; }
+.code.copied .sheets { display: none; }
+.code.copied .tick { display: inline; }
+@media (max-width: 380px) { .code { max-width: 100%; padding: 0 46px; } .code .symbol { right: 10px; } }
+/* Said to VoiceOver, unseen: “Copied”. */
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* The download, under the code. As wide as its words, as the text box is (the owner, 29 October 2026:
+   consistent with the waitlist's conventions): its faint fill, hairline and corners of 10, its words light
+   grey (28 October: “option 2 … if you could make the text light gray”), ink under the pointer, the edge
+   darker with the text box's ring on focus; the Apple logo before them on Apple's systems. Send Link…, on a
+   phone, is the same. */
 .get { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 28px; }  /* what it needs well below the button (the owner, 29 October 2026: “should be lower”) */
-.get[hidden] { display: none; }
-.get.shown { animation: rise 480ms var(--overshoot) both; }
-.get.shown .version { animation: arrive var(--slow) var(--ease-out) 200ms both; }
 .download {
+  -webkit-appearance: none; appearance: none; margin: 0; cursor: pointer; font: inherit;
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   height: 48px; padding: 0 24px; border-radius: 10px;
   border: 0.5px solid rgba(var(--tints), .13); background: var(--field); color: var(--quiet); text-decoration: none;
@@ -296,9 +312,19 @@ p, h1 { margin: 0; }
 .download:active { transform: scale(.985); transition: border-color var(--fast) linear, color var(--fast) linear, transform var(--fast) linear; }
 .download:focus { outline: none; }
 .download:focus-visible { border-color: rgba(var(--tints), .2); box-shadow: 0 0 0 3px rgba(var(--tints), .03); }
-.get.quiet .download:focus-visible { box-shadow: none; }
+.got.quiet .download:focus-visible { box-shadow: none; }
 .version { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; line-height: 18px; color: var(--quiet); }
 .version .release:empty { display: none; }
+
+/* The lines under the download, in the quiet grey, as the code page's: where Compile goes once it is down,
+   then Open in Compile, as the link "Enter it" is; on a phone, that Compile is a Mac app, over Send Link….
+   What Open in Compile didn't open says so under them, arriving as a message does. */
+.then { margin-top: 28px; font-size: 14px; line-height: 20px; color: var(--quiet); text-wrap: balance; }
+.get + .then, .then + .get { margin-top: 24px; }
+.then + .then { margin-top: 4px; }
+a.link { text-decoration: none; }
+.note { margin-top: 12px; max-width: 340px; font-size: 13px; line-height: 18px; color: var(--quiet); text-wrap: balance; animation: arrive var(--settle) var(--ease-out) both; }
+.note:empty { display: none; }
 
 /* The other way in: "Have an invitation code? Enter it", or back, "Join the waitlist". */
 .switch { margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--quiet); transition: opacity 160ms var(--ease-out); }
@@ -381,7 +407,7 @@ p, h1 { margin: 0; }
   .col > *, .col > .icon, .title .badge, .foot, .more, .card.shown, .card.done .problem { animation: none; }
   .icon, .icon:hover, .icon img { transition: none; transform: none; }
   .card.sending .go, .go:active:not(:disabled) { animation: none; transform: none; }
-  .col > .leaving, .col > .stepping, .get.shown, .get.shown .version, .problem.shown { animation: none; }
+  .col > .leaving, .col > .stepping, .got.shown, .got.shown .version, .got.shown .then, .problem.shown, .note { animation: none; }
   .switch { transition: none; }
   .theme { animation: none; }
   body { transition: none; }

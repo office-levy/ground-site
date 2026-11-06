@@ -5,17 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Compile</title>
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#08090A" media="(prefers-color-scheme: dark)">
-<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#08090A" data-dark="#08090A" data-light="#FFFFFF">
+<meta name="color-scheme" content="dark">
 <script>
-/* Before the page is drawn: Light or Dark as the moon last chose, and whether this is one of Apple's own
-   systems, whose font draws the Apple logo on the download (Site/public/assets/gate.css `.mark`). */
 (function () {
-  var root = document.documentElement;
-  try { var chosen = localStorage.getItem('appearance'); if (chosen === 'dark' || chosen === 'light') root.setAttribute('data-theme', chosen); } catch (e) {}
-  if (/Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || /Macintosh|iPhone|iPad/.test(navigator.userAgent || '')) root.classList.add('apple');
+  var root = document.documentElement, chosen = null;
+  try { chosen = localStorage.getItem('appearance'); } catch (e) {}
+  var theme = chosen === 'light' ? 'light' : 'dark';
+  root.setAttribute('data-theme', theme);
+  var bar = document.querySelector('meta[name="theme-color"]');
+  bar.setAttribute('content', bar.getAttribute('data-' + theme));
+  document.querySelector('meta[name="color-scheme"]').setAttribute('content', theme);
 })();
+</script>
+<script>
+/* Before the page is drawn: whether this is one of Apple's own systems, whose font draws the Apple logo on the
+   download (Site/public/assets/gate.css `.mark`). */
+if (/Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || /Macintosh|iPhone|iPad/.test(navigator.userAgent || '')) document.documentElement.classList.add('apple');
 </script>
 <meta name="referrer" content="no-referrer">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -23,12 +29,12 @@
 <link rel="stylesheet" href="assets/gate.css">
 </head>
 <body>
-<button class="theme" id="theme" type="button" aria-label="Dark appearance" aria-pressed="false"><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><path d="M11.66 7A7.08 7.08 0 1 0 20.82 16.49A7.06 7.06 0 0 1 11.66 7Z"/></svg></button>
+<button class="theme" id="theme" type="button" aria-label="Dark appearance" aria-pressed="true"><svg class="drawn" viewBox="0 0 28 28" aria-hidden="true"><path d="M11.66 7A7.08 7.08 0 1 0 20.82 16.49A7.06 7.06 0 0 1 11.66 7Z"/></svg></button>
 <main class="gate" data-cloud="https://ground-cloud.ml2873.workers.dev">
   <div class="col">
     <span class="icon" aria-hidden="true"><img class="day" src="assets/icon-512.png" alt="" width="100" height="100"><img class="night" src="assets/icon-512-dark.png" alt="" width="100" height="100"></span>
     <h1 class="title"><span class="name">Compile<span class="badge"><span>Research preview</span></span></span></h1>
-    <p class="about"><span>Visual research, gathered in one place on your Mac.</span></p>
+    <p class="about"><span>Visual research, gathered in one place.</span></p>
     <form class="card" id="ask" novalidate>
       <div class="row">
         <input class="field" id="email" type="email" placeholder="Join the waitlist with your email" aria-label="Your email address, to join the waitlist" autocomplete="email" spellcheck="false">
@@ -38,15 +44,27 @@
     </form>
     <form class="card" id="enter" novalidate hidden>
       <div class="cells" id="cells">
-        <input id="code" type="text" aria-label="Your invitation code: twelve letters and digits" autocomplete="off" autocorrect="off"
+        <input id="typed" type="text" aria-label="Your invitation code: twelve letters and digits" autocomplete="off" autocorrect="off"
                autocapitalize="characters" spellcheck="false" enterkeyhint="go">
         <div class="boxes" aria-hidden="true"><span class="group"><span class="box" style="--i:0"></span><span class="box" style="--i:1"></span><span class="box" style="--i:2"></span><span class="box" style="--i:3"></span></span><span class="group"><span class="box" style="--i:4"></span><span class="box" style="--i:5"></span><span class="box" style="--i:6"></span><span class="box" style="--i:7"></span></span><span class="group"><span class="box" style="--i:8"></span><span class="box" style="--i:9"></span><span class="box" style="--i:10"></span><span class="box" style="--i:11"></span></span></div>
       </div>
       <p class="problem" id="problem" role="status" aria-live="polite"></p>
     </form>
-    <div class="get" id="get" hidden>
-      <a class="download" id="download" href="#"><span class="mark" aria-hidden="true">&#xF8FF;</span>Download for Mac</a>
-      <p class="version"><span class="release"></span><span>Requires <span class="system">macOS 26 or later</span> and a Mac with Apple silicon</span></p>
+    <div class="got" id="got" hidden>
+      <div class="kept" id="kept"><button class="code" id="copy" type="button"><span id="code"></span><span class="symbol" aria-hidden="true"><svg class="drawn" viewBox="0 0 28 28"><g class="sheets"><rect x="10.6" y="6.8" width="10.4" height="12.4" rx="2.3"/><path d="M7.6 10.6V19.4A2.6 2.6 0 0 0 10.2 22H16.8"/></g><path class="tick" d="M9.4 14.6L12.7 18.1L18.9 10.3"/></svg></span></button><span class="sr" id="copied" role="status" aria-live="polite"></span></div>
+      <div class="steps" id="mac">
+        <div class="get" id="get">
+          <a class="download" id="download" href="#"><span class="mark" aria-hidden="true">&#xF8FF;</span>Download for Mac</a>
+          <p class="version"><span class="release"></span><span>Requires <span class="system">macOS 26 or later</span> and a Mac with Apple silicon</span></p>
+        </div>
+        <p class="then">Then drag Compile from Downloads to Applications.</p>
+        <p class="then">Installed it? <a class="link" id="open" href="ground://code">Open in Compile</a></p>
+      </div>
+      <div class="steps" id="handheld" hidden>
+        <p class="then">Compile is a Mac app. Open this link on a Mac to see it.</p>
+        <div class="get"><button class="download send" id="send-link" type="button">Send Link…</button></div>
+      </div>
+      <p class="note" id="note" role="status" aria-live="polite"></p>
     </div>
     <p class="switch" id="switch-line"><span id="switch-words">Have an invitation code? </span><button type="button" class="link" id="switch" aria-controls="enter">Enter it</button></p>
     <noscript><p class="problem">This page needs JavaScript.</p></noscript>

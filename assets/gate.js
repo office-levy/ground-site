@@ -1,9 +1,10 @@
 /* The site's door, which is the whole site for now (Site/build.mjs `door`): the waitlist, and behind
    "Have an invitation code?" a box for each of a code's letters. An address goes to Compile's cloud's waitlist
    (Cloud/src/waitlist.ts), which answers this page alone. A code goes to the cloud too, which answers a
-   code Compile made with where Compile downloads from; the code's form then gives way to the download,
-   which rises into its place. Nothing is kept here. The site is made from Site/ in the Ground repository;
-   change it there, never here. */
+   code Compile made with where Compile downloads from; the code's form then gives way to the code in its
+   box, the download, and Open in Compile with the code, which rise into its place, as the cloud's code page
+   ends (Cloud/src/web.ts `codeInvitation`). On a phone, Send Link… in the download's place. Nothing is kept
+   here. The site is made from Site/ in the Ground repository; change it there, never here. */
 (function () {
   'use strict';
 
@@ -16,8 +17,9 @@
   var send = document.getElementById('send');
   var said = document.getElementById('asked');
   var entering = document.getElementById('enter');
-  var field = document.getElementById('code');
+  var field = document.getElementById('typed');
   var problem = document.getElementById('problem');
+  var got = document.getElementById('got');
   var get = document.getElementById('get');
   var download = document.getElementById('download');
   var switchLine = document.getElementById('switch-line');
@@ -60,7 +62,8 @@
       if (response.status === 202) {
         asking.classList.add('done');
         email.readOnly = true;
-        say(said, 'You’re on the waitlist.');
+        // What comes next: the operator sends every code by email (the journey audit, 4 November 2026).
+        say(said, 'You’re on the waitlist. Your code will come by email.');
         return;
       }
       // 429: this network's five a day, or everyone's day's asks (Cloud/src/waitlist.ts): both are today's.
@@ -126,12 +129,20 @@
   cells.addEventListener('animationend', function (event) { if (event.target === cells) cells.classList.remove('wrong'); });
 
   /* The code was one: the boxes' tint clears, one after another, leaving the code, which holds a moment; the
-     form and the way to the waitlist step back, and the download rises into their place. */
-  function opened(link) {
+     form and the way to the waitlist step back, and the code in its box rises into their place with the
+     download under it, then Open in Compile with the code, so it is typed once (the journey audit, 4 November
+     2026). On a phone or a tablet, the code page's words for one and Send Link… in the download's place. */
+  function opened(link, plain) {
     entering.classList.add('done');
     field.readOnly = true;
     field.blur();
+    var phone = handheld();
+    keep(plain);
+    open.href = 'ground://code#c=' + plain;
     download.href = link;
+    mac.hidden = phone;
+    away.hidden = !phone;
+    var first = phone ? share : download;
     var calm = reduced();
     // The column keeps its height while the form gives way, so nothing above it moves.
     var column = document.querySelector('.col');
@@ -142,11 +153,11 @@
       window.setTimeout(function () {
         entering.hidden = true;
         switchLine.hidden = true;
-        appear(get);
-        // The download takes the focus the code had, without a ring until a key is pressed.
-        get.classList.add('quiet');
-        document.addEventListener('keydown', function loud() { get.classList.remove('quiet'); document.removeEventListener('keydown', loud); });
-        try { download.focus({ preventScroll: true }); } catch (e) { download.focus(); }
+        appear(got);
+        // The download, or Send Link…, takes the focus the code had, without a ring until a key is pressed.
+        got.classList.add('quiet');
+        document.addEventListener('keydown', function loud() { got.classList.remove('quiet'); document.removeEventListener('keydown', loud); });
+        try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); }
       }, calm ? 0 : 240);
     }, calm ? 0 : 820);
   }
@@ -181,7 +192,7 @@
           entering.classList.remove('sending');
           say(problem, '');
           if (answer.release) newest(answer.release);
-          opened(answer.download);
+          opened(answer.download, plain);
         });
       }
       entering.classList.remove('sending');
@@ -197,6 +208,93 @@
   }
   entering.addEventListener('submit', function (event) { event.preventDefault(); check(); });
 
+  // MARK: Once the code was one
+
+  /* The code page's test (Cloud/src/web.ts `handheldAgent`), and an iPad that presents itself as a Mac, as its
+     OPENING finds one: Compile can't open on either. */
+  function handheld() {
+    var agent = navigator.userAgent || '';
+    return /iPhone|iPad|iPod|Android/i.test(agent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(agent));
+  }
+
+  var mac = document.getElementById('mac');
+  var away = document.getElementById('handheld');
+  var share = document.getElementById('send-link');
+  var open = document.getElementById('open');
+  var note = document.getElementById('note');
+  var copy = document.getElementById('copy');
+  var shownCode = document.getElementById('code');
+  var copied = document.getElementById('copied');
+  var kept = '', shown = '', back = 0;
+
+  /* The code in its box, in fours, as the code page shows it (`KEPT`): a click copies it, for typing into
+     Compile where Open in Compile didn't open it, and the copy symbol turns to a tick a moment. */
+  function keep(plain) {
+    kept = plain;
+    shown = plain.match(/.{4}/g).join('-');
+    shownCode.textContent = shown;
+    copy.setAttribute('aria-label', 'Copy invitation code ' + shown);
+  }
+  function copiedNow() {
+    copy.classList.add('copied');
+    copied.textContent = 'Copied';
+    window.clearTimeout(back);
+    back = window.setTimeout(function () { copy.classList.remove('copied'); copied.textContent = ''; }, 1800);
+  }
+  /* Copied within the click itself first, which every browser allows; the clipboard's own call where that can't. */
+  function copyInClick() {
+    var area = document.createElement('textarea');
+    area.value = shown;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    area.remove();
+    copy.focus();
+    return ok;
+  }
+  copy.addEventListener('click', function () {
+    if (!shown) return;
+    if (copyInClick()) copiedNow();
+    else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(shown).then(copiedNow, function () {});
+  });
+
+  /* Open in Compile, tried as the code page tries it (Cloud/src/web.ts `OPENING`), without leaving the page: the
+     link is opened in a frame of its own, where a Mac without Compile shows nothing at all. If the page still has
+     the focus a moment later, nothing took it, and the line under it says so; if Compile takes it after all, the
+     line goes. */
+  var waiting = 0, watching = false;
+  function left() { window.clearTimeout(waiting); waiting = 0; note.textContent = ''; }
+  open.addEventListener('click', function (event) {
+    event.preventDefault();
+    if (!watching) {
+      watching = true;
+      window.addEventListener('blur', left);
+      document.addEventListener('visibilitychange', function () { if (document.hidden) left(); });
+    }
+    note.textContent = '';
+    var frame = document.createElement('iframe');
+    frame.hidden = true;
+    frame.src = open.href;
+    document.body.appendChild(frame);
+    window.setTimeout(function () { frame.remove(); }, 4000);
+    window.clearTimeout(waiting);
+    waiting = window.setTimeout(function () {
+      waiting = 0;
+      if (document.hasFocus() && !document.hidden) note.textContent = 'Compile didn’t open. If it isn’t on this Mac, download it above first.';
+    }, 1200);
+  });
+
+  /* On a phone: the code page for this code, handed to the share sheet to send to a Mac, as the code page's own
+     Send Link… does; without a share sheet, what to do instead. */
+  share.addEventListener('click', function () {
+    if (navigator.share) navigator.share({ title: 'Invitation · Compile', url: cloud + '/i#c=' + kept }).catch(function () {});
+    else note.textContent = 'Open this link on your Mac.';
+  });
+
   /* The download's button carries the Apple logo, which only Apple's own systems' font has (U+F8FF, as SF
      Pro draws it): elsewhere the button has its words alone. */
   if (/Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || /Macintosh|iPhone|iPad/.test(navigator.userAgent || '')) {
@@ -205,24 +303,24 @@
 
   // MARK: Light or Dark
 
-  /* The moon at the top right: Dark, or Light again, kept in this browser (the owner, 29 October 2026: “the
+  /* The moon at the top right: Light, or Dark again, kept in this browser (the owner, 29 October 2026: “the
      symbol for dark and light is tha thalf moon and then fill all white on dark mode”). Until it is used, the
-     page is as the reader's system is. */
+     page is Dark, whatever the reader's system is (the owner, 4 November 2026: “default dark mode in app and on
+     website”; Site/build.mjs `look`). The browser's own bars and its colour scheme turn with the page. */
   var theme = document.getElementById('theme');
   var root = document.documentElement;
-  var systemDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-  function isDark() {
-    var chosen = root.getAttribute('data-theme');
-    return chosen ? chosen === 'dark' : !!(systemDark && systemDark.matches);
-  }
+  function isDark() { return root.getAttribute('data-theme') !== 'light'; }
   function showTheme() { theme.setAttribute('aria-pressed', isDark() ? 'true' : 'false'); }
   theme.addEventListener('click', function () {
     var next = isDark() ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
+    var bar = document.querySelector('meta[name="theme-color"]');
+    if (bar) bar.setAttribute('content', bar.getAttribute('data-' + next));
+    var scheme = document.querySelector('meta[name="color-scheme"]');
+    if (scheme) scheme.setAttribute('content', next);
     try { localStorage.setItem('appearance', next); } catch (e) {}
     showTheme();
   });
-  if (systemDark && systemDark.addEventListener) systemDark.addEventListener('change', showTheme);
   showTheme();
 
   // MARK: Between the two
